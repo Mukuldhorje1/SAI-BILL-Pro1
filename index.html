@@ -1,0 +1,3495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAI-Bill Pro - Complete Retail Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        .logo .tagline {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .user-role {
+            background: #00b09b;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .user-role.owner {
+            background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+        }
+
+        .user-role.manager {
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+        }
+
+        .user-role.cashier {
+            background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        .tab-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .tab-header {
+            display: flex;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .tab-btn.active {
+            color: #1e3c72;
+            background: white;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #1e3c72;
+        }
+
+        .tab-content {
+            padding: 2rem;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 2rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 1.2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e3c72;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #4b6cb7;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(75, 108, 183, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+            color: white;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #444;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Barcode Scanner Styles */
+        .scanner-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .scanner-box {
+            border: 3px dashed #4b6cb7;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(75, 108, 183, 0.1) 0%, rgba(24, 40, 72, 0.05) 100%);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .scanner-box:hover {
+            background: linear-gradient(135deg, rgba(75, 108, 183, 0.15) 0%, rgba(24, 40, 72, 0.1) 100%);
+            border-color: #182848;
+        }
+
+        .scanner-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #4b6cb7;
+        }
+
+        .scanner-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+            animation: pulse 2s infinite;
+        }
+
+        .status-idle {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .barcode-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .barcode-input-group input {
+            flex: 1;
+        }
+
+        /* Bill Summary */
+        .bill-summary {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .bill-total {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .bill-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+            border-color: #4b6cb7;
+        }
+
+        .product-card.selected {
+            border-color: #00b09b;
+            background: #f0fff4;
+        }
+
+        .product-barcode {
+            font-family: monospace;
+            background: #f8f9fa;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .stock-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .stock-high {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .stock-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .stock-low {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .receipt {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            font-family: 'Courier New', monospace;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px dashed #333;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .receipt-total {
+            border-top: 2px solid #333;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1e3c72;
+            font-size: 1.8rem;
+        }
+
+        .role-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .role-option {
+            flex: 1;
+            padding: 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .role-option:hover {
+            border-color: #4b6cb7;
+            transform: translateY(-3px);
+        }
+
+        .role-option.selected {
+            border-color: #4b6cb7;
+            background: linear-gradient(135deg, rgba(75, 108, 183, 0.1) 0%, rgba(24, 40, 72, 0.05) 100%);
+        }
+
+        .role-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* User Management */
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .user-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #4b6cb7;
+        }
+
+        .user-card.owner {
+            border-left-color: #f7971e;
+        }
+
+        .user-card.manager {
+            border-left-color: #4b6cb7;
+        }
+
+        .user-card.cashier {
+            border-left-color: #00b09b;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        /* Owner Controls */
+        .owner-controls {
+            background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+            border: 2px solid #ffd200;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .owner-title {
+            color: #856404;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Permission indicators */
+        .permission-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .permission-granted {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .permission-denied {
+            background: #f8d7da;
+            color: #721c24;
+            opacity: 0.6;
+        }
+
+        /* Feature based on role */
+        .feature-owner-only {
+            display: none;
+        }
+
+        .feature-manager-up {
+            display: none;
+        }
+
+        /* Reports */
+        .report-section {
+            margin: 2rem 0;
+        }
+
+        .chart-container {
+            height: 300px;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        /* GST Section */
+        .gst-section {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .gst-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #b3e5fc;
+        }
+
+        .gst-row:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Stock Management */
+        .stock-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .stock-input {
+            width: 80px;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .user-info {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .role-selector {
+                flex-direction: column;
+            }
+
+            .tab-header {
+                flex-wrap: wrap;
+            }
+
+            .tab-btn {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+    </style>
+    <!-- Include QuaggaJS for barcode scanning -->
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+    <!-- Include Chart.js for reports -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal" style="display: flex;">
+        <div class="modal-content">
+            <h2 class="modal-title">🔐 Sai-Bill Login</h2>
+
+            <div class="role-selector">
+                <div class="role-option" onclick="selectRole('owner')">
+                    <div class="role-icon">👑</div>
+                    <h3>Owner</h3>
+                    <p>System access</p>
+                </div>
+                <div class="role-option" onclick="selectRole('manager')">
+                    <div class="role-icon">👔</div>
+                    <h3>Manager</h3>
+                    <p>Manage operations</p>
+                </div>
+                <div class="role-option" onclick="selectRole('cashier')">
+                    <div class="role-icon">👩‍💼</div>
+                    <h3>Cashier</h3>
+                    <p> POS operations</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" class="form-control" placeholder="Enter username" value="admin">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Enter password" value="123456">
+            </div>
+
+            <div class="form-group">
+                <label for="branch">Branch</label>
+                <select id="branch" class="form-control">
+                    <option value="main">Main Store</option>
+                    <option value="north">North Branch</option>
+                    <option value="south">South Branch</option>
+                    <option value="east">East Branch</option>
+                </select>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 1.1rem;" onclick="login()">
+                Login to System
+            </button>
+
+            <!--<div style="text-align: center; margin-top: 1.5rem; color: #666;">
+                <p>Demo Credentials:<br>
+                <strong>Owner:</strong> admin/123456<br>
+                <strong>Manager:</strong> manager/123456<br>
+                <strong>Cashier:</strong> cashier/123456</p>
+            </div> -->
+        </div>
+    </div>
+
+    <header class="header" style="display: none;" id="mainHeader">
+        <div class="header-content">
+            <div class="logo">
+                <div style="font-size: 2.5rem; font-weight: bold;">📠</div>
+                <div>
+                    <h1>Sai-Bill Pro</h1>
+                    <div class="tagline">Complete Retail Management System</div>
+                </div>
+            </div>
+
+            <div class="user-info">
+                <div class="user-badge" id="userBadge">
+                    <span id="userAvatar">👤</span>
+                    <div>
+                        <div id="userName">Loading...</div>
+                        <div class="user-role cashier" id="userRole">Cashier</div>
+                    </div>
+                </div>
+
+                <nav class="nav-links">
+                    <a href="#dashboard" onclick="switchTab('dashboard')" class="active">🏠 Dashboard</a>
+                    <a href="#pos" onclick="switchTab('pos')">🛒 POS</a>
+                    <a href="#checkout" onclick="openCheckoutTab(); return false;">💳 Bill Checkout</a>
+                    <a href="#inventory" onclick="switchTab('inventory')" class="feature-manager-up">📦 Inventory</a>
+                    <a href="#reports" onclick="switchTab('reports')" class="feature-manager-up">📊 Reports</a>
+                    <a href="#users" onclick="switchTab('users')" class="feature-owner-only">👥 Users</a>
+                    <a href="#settings" onclick="switchTab('settings')" class="feature-owner-only">⚙️ Settings</a>
+                    <a href="#" onclick="logout()" style="background: rgba(255,255,255,0.2);">🚪 Logout</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="display: none;" id="mainContent">
+        <!-- Tab Container -->
+        <div class="tab-container">
+            <div class="tab-header">
+                <button class="tab-btn active" onclick="switchTab('dashboard')">🏠 Dashboard</button>
+                <button class="tab-btn" onclick="switchTab('pos')">🛒 POS Terminal</button>
+                <button class="tab-btn" onclick="openCheckoutTab()" title="Payment & gateway">💳 Bill Checkout</button>
+                <button class="tab-btn feature-manager-up" onclick="switchTab('inventory')">📦 Inventory</button>
+                <button class="tab-btn feature-manager-up" onclick="switchTab('reports')">📊 Reports</button>
+                <button class="tab-btn feature-owner-only" onclick="switchTab('users')">👥 User Management</button>
+                <button class="tab-btn feature-owner-only" onclick="switchTab('settings')">⚙️ System Settings</button>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div class="tab-content active" id="dashboard">
+                <!-- Owner Controls -->
+                <div class="owner-controls feature-owner-only" id="ownerControls">
+                    <div class="owner-title">
+                        <span>👑 Owner Dashboard -System Control</span>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-warning" onclick="switchTab('users')">👥 Manage All Users</button>
+                        <button class="btn btn-primary" onclick="generateFullReport()">📊 Generate Full Report</button>
+                        <button class="btn btn-success" onclick="switchTab('reports')">💰 Financial Analysis</button>
+                        <button class="btn" onclick="backupFullSystem()" style="background: #6c757d; color: white;">💾
+                            Full System Backup</button>
+                        <button class="btn btn-danger" onclick="showAuditLog()">📝 View Audit Log</button>
+                    </div>
+                </div>
+
+                <!-- Manager Controls -->
+                <div class="owner-controls feature-manager-up"
+                    style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-color: #2196f3;">
+                    <div class="owner-title">
+                        <span>👔 Manager Dashboard - Operations Control</span>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="switchTab('inventory')">📦 Manage Stock</button>
+                        <button class="btn btn-success" onclick="generateDailyReport()">📈 Daily Report</button>
+                        <button class="btn btn-warning" onclick="viewStaffPerformance()">👥 Staff Performance</button>
+                    </div>
+                </div>
+
+                <!-- Stats Dashboard -->
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value" id="todaySales">₹0.00</div>
+                        <div class="stat-label">Today's Sales</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="transactions">0</div>
+                        <div class="stat-label">Transactions</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="scansToday">0</div>
+                        <div class="stat-label">Scans Today</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="avgBill">₹0.00</div>
+                        <div class="stat-label">Avg Bill Value</div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">⚡</div>
+                        <h3 class="card-title">Quick Actions</h3>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="switchTab('pos')">🛒 Start New Bill</button>
+                        <button class="btn btn-success" onclick="goToCheckout()" style="background: linear-gradient(135deg,#11998e,#38ef7d);">💳 Bill Checkout</button>
+                        <button class="btn btn-success" onclick="switchTab('inventory')">📦 Check Stock</button>
+                        <button class="btn btn-warning feature-manager-up" onclick="switchTab('reports')">📊 View
+                            Reports</button>
+                        <button class="btn feature-owner-only" onclick="switchTab('users')"
+                            style="background: #6c757d; color: white;">👥 Manage Users</button>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📋</div>
+                        <h3 class="card-title">Recent Transactions</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Bill #</th>
+                                    <th>Time</th>
+                                    <th>Amount</th>
+                                    <th>Items</th>
+                                    <th>Cashier</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentTransactions">
+                                <!-- Transactions will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- POS Tab -->
+            <div class="tab-content" id="pos">
+                <div class="main-grid">
+                    <div>
+                        <!-- POS Terminal Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">🛒</div>
+                                <h3 class="card-title">Smart POS Terminal</h3>
+                                <div style="margin-left: auto; font-size: 0.9rem; color: #666;">
+                                    Logged in as: <span id="currentUserRole">Cashier</span>
+                                </div>
+                            </div>
+
+                            <!-- Scanner Section -->
+                            <div class="scanner-container">
+                                <div class="scanner-box" id="scannerBox">
+                                    <div class="scanner-icon">📷</div>
+                                    <h3>Click to start / stop camera scanner</h3>
+                                    <p>Hold the barcode steady in good light. Or type below.</p>
+                                    <div id="scannerStatus" class="scanner-status status-idle">Scanner: Idle</div>
+                                </div>
+
+                                <div id="scannerPreview" style="display: none; margin-top: 1rem;">
+                                    <div id="quaggaViewport" style="width:100%;max-width:640px;min-height:240px;margin:0 auto;border-radius:8px;overflow:hidden;background:#111;position:relative;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Barcode Input -->
+                            <div class="form-group">
+                                <label for="barcodeInput">Enter Barcode Manually</label>
+                                <div class="barcode-input-group">
+                                    <input type="text" id="barcodeInput" class="form-control"
+                                        placeholder="Scan or enter barcode (EAN-13/UPC-A)"
+                                        onkeypress="handleBarcodeEnter(event)">
+                                    <button class="btn btn-primary" onclick="manualAddItem()">Add Item</button>
+                                </div>
+                            </div>
+
+                            <!-- Bill Summary -->
+                            <div class="bill-summary">
+                                <div class="bill-meta">
+<span id="billNumber">` + (billCounter+1).toString().padStart(5, '0') + `</span>
+                                    <div>Time: <span id="currentTime">00.00 AM</span></div>
+                                    <div>Cashier: <span id="cashierName">J Doe</span></div>
+                                </div>
+                                <div class="bill-total" id="billTotal">₹0.00</div>
+                                <div class="bill-meta">
+                                    <div>Items: <span id="itemCount">0</span></div>
+                                    <div>GST (18%): <span id="taxAmount">₹0.00</span></div>
+                                    <div>Discount: <span id="discountAmount">₹0.00</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success" onclick="goToCheckout()" style="background: linear-gradient(135deg,#11998e,#38ef7d);">
+                                    💳 Bill Checkout &amp; Pay
+                                </button>
+                                <button class="btn btn-warning" onclick="holdBill()">
+                                    ⏸️ Hold Bill
+                                </button>
+                                <button class="btn btn-danger" onclick="clearBill()">
+                                    🗑️ Clear Bill
+                                </button>
+                                <button class="btn btn-primary" onclick="applyDiscount()">
+                                    🎯 Apply Discount
+                                </button>
+                                <button class="btn feature-manager-up" style="background: #6c757d; color: white;"
+                                    onclick="voidBill()">
+                                    ❌ Void Bill
+                                </button>
+                                <button class="btn feature-manager-up" style="background: #17a2b8; color: white;"
+                                    onclick="editBillDetails()">
+                                    ✏️ Edit Bill
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Current Bill Items -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">📋</div>
+                                <h3 class="card-title">Current Bill Items</h3>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Barcode</th>
+                                            <th>Product</th>
+                                            <th>Price (₹)</th>
+                                            <th>Qty</th>
+                                            <th>Total (₹)</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="billItems">
+                                        <!-- Bill items will appear here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <!-- Quick Products -->
+                        <div class="card" id="products">
+                            <div class="card-header">
+                                <div class="card-icon">🏷️</div>
+                                <h3 class="card-title">Quick Add Products</h3>
+                            </div>
+                            <div class="product-grid" id="quickProducts">
+                                <!-- Products will be loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- GST Breakdown -->
+                        <div class="gst-section">
+                            <h3>GST Breakdown (12%)</h3>
+                            <div class="gst-row">
+                                <span>CGST (6%):</span>
+                                <span id="cgstAmount">₹0.00</span>
+                            </div>
+                            <div class="gst-row">
+                                <span>SGST (6%):</span>
+                                <span id="sgstAmount">₹0.00</span>
+                            </div>
+                            <div class="gst-row">
+                                <span>Total GST:</span>
+                                <span id="totalGst">₹0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Live Receipt Preview -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">🧾</div>
+                                <h3 class="card-title">Receipt Preview</h3>
+                            </div>
+                            <div class="receipt">
+                                <div class="receipt-header">
+                                    <h2>Sai-BILL STORE</h2>
+                                    <p>123.pune 411009</p>
+                                    <p>Phone: 1800-123-456</p>
+                                    <p>GSTIN: 27ABCDE1234F1Z5</p>
+                                    <p>--------------------------------</p>
+                                    <p>Bill #: <span id="receiptBillNo">00123</span></p>
+                                    <p>Date: <span id="receiptDate">—</span></p>
+                                    <p>Cashier: <span id="receiptCashier">John Doe</span></p>
+                                </div>
+
+                                <div id="receiptItems">
+                                    <div class="receipt-item">
+                                        <span>--------------------------------</span>
+                                    </div>
+                                    <div class="receipt-item">
+                                        <span>No items added yet</span>
+                                    </div>
+                                </div>
+
+                                <div class="receipt-total">
+                                    <div class="receipt-item">
+                                        <span>TOTAL:</span>
+                                        <span id="receiptTotal">₹0.00</span>
+                                    </div>
+                                </div>
+
+                                <div style="text-align: center; margin-top: 2rem;">
+                                    <p>Thank you for shopping with us!</p>
+                                    <p>** This is a computer generated receipt **</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bill Checkout / Payment Gateway -->
+            <div class="tab-content" id="checkout">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">💳</div>
+                        <h3 class="card-title">Bill Checkout &amp; Payment</h3>
+                    </div>
+                    <p style="color:#555;margin-bottom:1rem;"><strong>Real-time payment:</strong> use Razorpay (card / UPI / netbanking). <strong>Offline:</strong> choose Cash or manual card, then complete. Receipt prints automatically after payment.</p>
+                    <div id="checkoutEmpty" style="display:none;padding:1.5rem;text-align:center;background:#fff3cd;border-radius:8px;margin-bottom:1rem;">
+                        No items in the bill. <button type="button" class="btn btn-primary" onclick="switchTab('pos')">Go to POS</button>
+                    </div>
+                    <div id="checkoutBody">
+                        <div class="bill-summary" style="max-width:480px;margin-bottom:1rem;">
+                            <div class="bill-total" id="checkoutPayable">₹0.00</div>
+                            <div class="bill-meta">
+                                <div>Subtotal: <span id="checkoutSubtotal">₹0.00</span></div>
+                                <div>GST: <span id="checkoutGst">₹0.00</span></div>
+                                <div>Discount: <span id="checkoutDiscount">₹0.00</span></div>
+                                <div>Items: <span id="checkoutItemCount">0</span></div>
+                            </div>
+                        </div>
+                        <div class="filter-controls" style="flex-wrap:wrap;gap:10px;">
+                            <input type="text" id="checkoutCustomer" class="form-control" placeholder="Customer name" value="Walk-in Customer" style="min-width:220px;">
+                        </div>
+                        <h4 style="margin:1rem 0 0.5rem;">1. Real-time payment (Razorpay)</h4>
+                        <div class="btn-group" style="flex-wrap:wrap;margin-bottom:1rem;">
+                            <button type="button" class="btn btn-primary" onclick="startRazorpayPayment()" style="background:linear-gradient(135deg,#0f3460,#16213e);font-weight:700;">⚡ Pay with Razorpay (Card / UPI / Netbanking)</button>
+                        </div>
+                        <h4 style="margin:0.5rem 0;">2. Offline payment</h4>
+                        <p style="font-size:0.9rem;color:#666;margin-bottom:0.5rem;">Select method, then complete — receipt auto-prints.</p>
+                        <div class="btn-group" style="flex-wrap:wrap;">
+                            <label class="btn" style="cursor:pointer;border:2px solid #1e3c72;"><input type="radio" name="checkoutPay" value="Cash" checked style="margin-right:6px;"> Cash</label>
+                            <label class="btn" style="cursor:pointer;border:2px solid #dee2e6;"><input type="radio" name="checkoutPay" value="Card" style="margin-right:6px;"> Card (manual)</label>
+                            <label class="btn" style="cursor:pointer;border:2px solid #dee2e6;"><input type="radio" name="checkoutPay" value="UPI" style="margin-right:6px;"> UPI (manual)</label>
+                            <label class="btn" style="cursor:pointer;border:2px solid #dee2e6;"><input type="radio" name="checkoutPay" value="Net Banking" style="margin-right:6px;"> Net Banking (manual)</label>
+                        </div>
+                        <div class="btn-group" style="margin-top:1.25rem;flex-wrap:wrap;">
+                            <button type="button" class="btn btn-success" onclick="completeCheckoutSale()">✅ Complete payment &amp; auto-print receipt</button>
+                            <button type="button" class="btn" style="background:#6c757d;color:#fff;" onclick="switchTab('pos')">← Back to POS</button>
+                        </div>
+                        <p id="gatewayHint" style="font-size:0.85rem;color:#666;margin-top:1rem;">Razorpay: add API keys in <code>config.php</code> (<code>$razorpay_key_id</code>, <code>$razorpay_key_secret</code>). Production: verify payment signature on your server.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Tab -->
+            <div class="tab-content" id="inventory">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📦</div>
+                        <h3 class="card-title">Inventory Management</h3>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="showAddProductModal()">➕ Add New Product</button>
+                        <button class="btn btn-primary" onclick="updateStockBulk()">📝 Bulk Update</button>
+                        <button class="btn btn-warning" onclick="exportInventory()">📤 Export Inventory</button>
+                        <button class="btn" style="background: #6c757d; color: white;" onclick="printInventory()">🖨️
+                            Print List</button>
+                    </div>
+
+                    <div class="filter-controls">
+                        <input type="text" id="inventorySearch" class="form-control" placeholder="Search products..."
+                            onkeyup="searchInventory()">
+                        <select id="categoryFilter" class="form-control" onchange="filterInventory()">
+                            <option value="">All Categories</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Storage">Storage</option>
+                            <option value="Audio">Audio</option>
+                        </select>
+                        <select id="stockFilter" class="form-control" onchange="filterInventory()">
+                            <option value="">All Stock Levels</option>
+                            <option value="low">Low Stock (< 10)</option>
+                            <option value="medium">Medium Stock (10-50)</option>
+                            <option value="high">High Stock (> 50)</option>
+                        </select>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Barcode</th>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Price (₹)</th>
+                                    <th>Stock</th>
+                                    <th>Value (₹)</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventoryTable">
+                                <!-- Inventory items will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Stock Summary -->
+                    <div class="stats-grid" style="margin-top: 2rem;">
+                        <div class="stat-box">
+                            <div class="stat-value" id="totalProducts">0</div>
+                            <div class="stat-label">Total Products</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="totalStockValue">₹0</div>
+                            <div class="stat-label">Stock Value</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="lowStockItems">0</div>
+                            <div class="stat-label">Low Stock Items</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="outOfStock">0</div>
+                            <div class="stat-label">Out of Stock</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div class="tab-content" id="reports">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📊</div>
+                        <h3 class="card-title">Reports & Analytics</h3>
+                    </div>
+
+                    <div class="filter-controls">
+                        <select id="reportType" class="form-control" onchange="loadReport()">
+                            <option value="sales">Sales Report</option>
+                            <option value="stock">Stock Report</option>
+                            <option value="gst">GST Report</option>
+                            <option value="user">User Performance</option>
+                            <option value="financial">Financial Summary</option>
+                        </select>
+                        <input type="date" id="reportStartDate" class="form-control" value="2026-02-27">
+                        <input type="date" id="reportEndDate" class="form-control" value="2026-02-27">
+                        <button class="btn btn-primary" onclick="loadReport()">Generate Report</button>
+                        <button class="btn btn-success" onclick="exportReport()">📤 Export</button>
+                        <button class="btn btn-warning feature-owner-only" onclick="editReportData()">✏️ Edit
+                            Data</button>
+                    </div>
+
+                    <!-- Sales Chart -->
+                    <div class="chart-container">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+
+                    <!-- Report Data Table -->
+                    <div class="table-responsive">
+                        <table class="data-table" id="reportTable">
+                            <thead>
+                                <tr id="reportHeaders">
+                                    <th>Date</th>
+                                    <th>Bill #</th>
+                                    <th>Amount (₹)</th>
+                                    <th>GST (₹)</th>
+                                    <th>Items</th>
+                                    <th>Cashier</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportData">
+                                <!-- Report data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Report Summary -->
+                    <div class="stats-grid" style="margin-top: 2rem;">
+                        <div class="stat-box">
+                            <div class="stat-value" id="reportTotalSales">₹0</div>
+                            <div class="stat-label">Total Sales</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="reportTotalGST">₹0</div>
+                            <div class="stat-label">Total GST</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="reportAvgBill">₹0</div>
+                            <div class="stat-label">Avg Bill</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="reportTotalItems">0</div>
+                            <div class="stat-label">Items Sold</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Management Tab -->
+            <div class="tab-content" id="users">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">👥</div>
+                        <h3 class="card-title">User Management System</h3>
+                    </div>
+
+                    <div class="owner-title" style="color: #1e3c72; margin-bottom: 2rem;">
+                        <span>👑 Owner Panel - Full User Control</span>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="showAddUserModal()">➕ Add New User</button>
+                        <button class="btn btn-warning" onclick="showEditUserModal()">✏️ Edit User</button>
+                        <button class="btn btn-danger" onclick="showDeleteUserModal()">🗑️ Remove User</button>
+                        <button class="btn btn-primary" onclick="resetUserPassword()">🔐 Reset Password</button>
+                        <button class="btn" style="background: #6c757d; color: white;" onclick="viewUserActivity()">📝
+                            View Activity</button>
+                    </div>
+
+                    <!-- User Permissions Management -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <div class="card-icon">🔐</div>
+                            <h3 class="card-title">Permission Management</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Role</th>
+                                        <th>POS Access</th>
+                                        <th>Stock Edit</th>
+                                        <th>Reports View</th>
+                                        <th>User Management</th>
+                                        <th>Settings Access</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userPermissionsTable">
+                                    <!-- User permissions will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Users List -->
+                    <div class="users-grid" id="usersList">
+                        <!-- Users will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settings">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">⚙️</div>
+                        <h3 class="card-title">System Settings</h3>
+                    </div>
+
+                    <div class="owner-title" style="color: #1e3c72; margin-bottom: 2rem;">
+                        <span>👑 Owner Only - System Configuration</span>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-warning" onclick="editTaxSettings()">💰 Edit Tax Settings</button>
+                        <button class="btn btn-primary" onclick="editCompanyInfo()">🏢 Company Information</button>
+                        <button class="btn btn-success" onclick="editReceiptSettings()">🧾 Receipt Settings</button>
+                        <button class="btn" style="background: #6c757d; color: white;" onclick="backupSettings()">💾
+                            Backup Settings</button>
+                        <button class="btn btn-danger" onclick="showSystemLogs()">📋 System Logs</button>
+                    </div>
+
+                    <!-- GST Settings -->
+                    <div class="gst-section" style="margin-top: 2rem;">
+                        <h3>GST Configuration</h3>
+                        <div class="form-group">
+                            <label>GST Percentage (%)</label>
+                            <input type="number" id="gstPercentage" class="form-control" value="18" min="0" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label>CGST/SGST Split</label>
+                            <div style="display: flex; gap: 1rem;">
+                                <input type="number" id="cgstPercentage" class="form-control" value="9"
+                                    placeholder="CGST %">
+                                <input type="number" id="sgstPercentage" class="form-control" value="9"
+                                    placeholder="SGST %">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="saveGSTSettings()">💾 Save GST Settings</button>
+                    </div>
+
+                    <!-- Company Settings -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <div class="card-icon">🏢</div>
+                            <h3 class="card-title">Company Information</h3>
+                        </div>
+                        <div class="form-group">
+                            <label>Company Name</label>
+                            <input type="text" id="companyName" class="form-control" value="Omni-Bill Retail Store">
+                        </div>
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input type="text" id="companyAddress" class="form-control" value="123 Retail Street, City">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" id="companyPhone" class="form-control" value="1800-123-456">
+                        </div>
+                        <div class="form-group">
+                            <label>GSTIN Number</label>
+                            <input type="text" id="gstinNumber" class="form-control" value="27ABCDE1234F1Z5">
+                        </div>
+                        <button class="btn btn-primary" onclick="saveCompanySettings()">💾 Save Company Info</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div id="receiptModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1rem;">Print Receipt</h2>
+            <div id="printableReceipt" class="receipt">
+                <form action="save_bill.php" method="POST">
+  <input type="text" name="bill_no" placeholder="Bill No">
+  <input type="number" name="amount" placeholder="Amount">
+  <input type="number" name="gst" placeholder="GST">
+  <select name="payment">
+    <option value="cash">Cash</option>
+    <option value="upi">UPI</option>
+    <option value="card">Card</option>
+  </select>
+  <button type="submit">Save Bill</button>
+</form>
+                <!-- Printable receipt content -->
+            </div>
+            <div class="btn-group" style="margin-top: 2rem;">
+                <button class="btn btn-primary" onclick="printReceipt()">🖨️ Print</button>
+                <button class="btn" onclick="closeModal('receiptModal')" style="background: #ccc;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1rem;">➕ Add New User</h2>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="newUserName" class="form-control" placeholder="Enter full name">
+            </div>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="newUserUsername" class="form-control" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="newUserPassword" class="form-control" placeholder="Enter password">
+            </div>
+            <div class="form-group">
+                <label>Role</label>
+                <select id="newUserRole" class="form-control">
+                    <option value="cashier">Cashier</option>
+                    <option value="manager">Manager</option>
+                    <option value="owner">Owner</option>
+                </select>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-success" onclick="addNewUser()">Add User</button>
+                <button class="btn" onclick="closeModal('addUserModal')" style="background: #ccc;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="addProductModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1rem;">➕ Add New Product</h2>
+            <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" id="productName" class="form-control" placeholder="Enter product name">
+            </div>
+            <div class="form-group">
+                <label>Barcode</label>
+                <input type="text" id="productBarcode" class="form-control" placeholder="Enter barcode">
+            </div>
+            <div class="form-group">
+                <label>Price (₹)</label>
+                <input type="number" id="productPrice" class="form-control" placeholder="Enter price">
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select id="productCategory" class="form-control">
+                    <option value="Electronics">Electronics</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Storage">Storage</option>
+                    <option value="Audio">Audio</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Initial Stock</label>
+                <input type="number" id="productStock" class="form-control" value="10" min="0">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-success" onclick="addNewProduct()">Add Product</button>
+                <button class="btn" onclick="closeModal('addProductModal')" style="background: #ccc;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editBillModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1rem;">✏️ Edit Bill Details</h2>
+            <div class="form-group">
+                <label>Customer Name</label>
+                <input type="text" id="editCustomerName" class="form-control" placeholder="Enter customer name">
+            </div>
+            <div class="form-group">
+                <label>Discount (%)</label>
+                <input type="number" id="editDiscount" class="form-control" min="0" max="100" value="0">
+            </div>
+            <div class="form-group">
+                <label>Additional Notes</label>
+                <textarea id="editNotes" class="form-control" rows="3" placeholder="Add notes"></textarea>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveBillEdits()">Save Changes</button>
+                <button class="btn" onclick="closeModal('editBillModal')" style="background: #ccc;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bulk Update Modal -->
+    <div id="bulkUpdateModal" class="modal">
+        <div class="modal-content" style="max-width:700px;">
+            <h2 style="margin-bottom:1rem;">📝 Bulk Stock Update</h2>
+            <p style="color:#666;margin-bottom:1rem;">Update stock quantities for multiple products at once.</p>
+            <div class="table-responsive">
+                <table class="data-table" id="bulkUpdateTable">
+                    <thead><tr><th>Product</th><th>Barcode</th><th>Current Stock</th><th>New Stock</th></tr></thead>
+                    <tbody id="bulkUpdateBody"></tbody>
+                </table>
+            </div>
+            <div class="btn-group" style="margin-top:1rem;">
+                <button class="btn btn-success" onclick="applyBulkUpdate()">✅ Apply All Updates</button>
+                <button class="btn" onclick="closeModal('bulkUpdateModal')" style="background:#ccc;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Log Modal -->
+    <div id="activityModal" class="modal">
+        <div class="modal-content" style="max-width:700px;">
+            <h2 style="margin-bottom:1rem;">📝 User Activity Log</h2>
+            <div id="activityLogContent" style="max-height:400px;overflow-y:auto;"></div>
+            <div class="btn-group" style="margin-top:1rem;">
+                <button class="btn btn-primary" onclick="printActivityLog()">🖨️ Print Log</button>
+                <button class="btn" onclick="closeModal('activityModal')" style="background:#ccc;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Add Product to POS Modal -->
+    <div id="quickAddProductModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom:1rem;">⚡ Quick Add Product to POS</h2>
+            <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" id="qaProductName" class="form-control" placeholder="Enter product name">
+            </div>
+            <div class="form-group">
+                <label>Barcode</label>
+                <input type="text" id="qaProductBarcode" class="form-control" placeholder="Enter barcode">
+            </div>
+            <div class="form-group">
+                <label>Price (₹)</label>
+                <input type="number" id="qaProductPrice" class="form-control" placeholder="Enter price">
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select id="qaProductCategory" class="form-control">
+                    <option value="Electronics">Electronics</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Storage">Storage</option>
+                    <option value="Audio">Audio</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Initial Stock</label>
+                <input type="number" id="qaProductStock" class="form-control" value="10" min="0">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-success" onclick="quickAddProductToPOS()">➕ Add & Scan to Bill</button>
+                <button class="btn btn-primary" onclick="quickAddProductOnly()">💾 Add to Inventory Only</button>
+                <button class="btn" onclick="closeModal('quickAddProductModal')" style="background:#ccc;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        // ===== ACTIVITY LOG SYSTEM =====
+        let activityLog = JSON.parse(localStorage.getItem('activityLog') || '[]');
+
+        function logActivity(action, details, user) {
+            const entry = {
+                id: Date.now(),
+                timestamp: getCurrentDateTime(),
+                user: user || (currentUser ? currentUser.name : 'System'),
+                role: currentUser ? currentUser.role : 'system',
+                action: action,
+                details: details
+            };
+            activityLog.unshift(entry);
+            if (activityLog.length > 500) activityLog = activityLog.slice(0, 500);
+            localStorage.setItem('activityLog', JSON.stringify(activityLog));
+        }
+
+        // ===== DATABASES =====
+        // Load from localStorage or use defaults
+        let usersDatabase = JSON.parse(localStorage.getItem('usersDatabase') || 'null') || {
+            'admin': { name: 'System Owner', password: '123456', role: 'owner', branch: 'main', avatar: '👑', permissions: ['all'], joinDate: '27-02-2026' },
+            'manager': { name: 'Store Manager', password: '123456', role: 'manager', branch: 'main', avatar: '👔', permissions: ['pos', 'inventory', 'reports', 'edit_bill'], joinDate: '27-02-2026' },
+            'cashier': { name: 'John Cashier', password: '123456', role: 'cashier', branch: 'main', avatar: '👩‍💼', permissions: ['pos', 'scan'], joinDate: '27-02-2026' }
+        };
+
+        let productDatabase = JSON.parse(localStorage.getItem('productDatabase') || 'null') || {
+            '8901234567890': { id: 1, name: 'Wireless Mouse Pro', price: 450.00, category: 'Electronics', barcode: '8901234567890', stock: 25, minStock: 10, maxStock: 100, lastUpdated: '27-02-2026' },
+            '8901234567891': { id: 2, name: 'Mechanical Keyboard', price: 800.00, category: 'Electronics', barcode: '8901234567891', stock: 15, minStock: 5, maxStock: 50, lastUpdated: '27-02-2026' },
+            '8901234567892': { id: 3, name: 'USB Drive 32GB', price: 250.00, category: 'Storage', barcode: '8901234567892', stock: 50, minStock: 20, maxStock: 200, lastUpdated: '27-02-2026' },
+            '8901234567893': { id: 4, name: 'HDMI Cable 2m', price: 150.00, category: 'Accessories', barcode: '8901234567893', stock: 8, minStock: 10, maxStock: 100, lastUpdated: '27-02-2026' },
+            '8901234567894': { id: 5, name: 'Laptop Sleeve', price: 300.00, category: 'Accessories', barcode: '8901234567894', stock: 35, minStock: 15, maxStock: 100, lastUpdated: '27-02-2026' },
+            '8901234567895': { id: 6, name: 'Power Bank 10000mAh', price: 750.00, category: 'Electronics', barcode: '8901234567895', stock: 12, minStock: 5, maxStock: 50, lastUpdated: '27-02-2026' }
+        };
+
+        let salesDatabase = JSON.parse(localStorage.getItem('salesDatabase') || 'null') || (() => {
+            const d = new Date().toLocaleDateString('en-CA');
+            return [
+                { id: 1, billNo: '00123', date: `${d} 10:30`, items: [{ product: 'Wireless Mouse Pro', price: 450, quantity: 2, total: 900 }, { product: 'USB Drive 32GB', price: 250, quantity: 1, total: 250 }], subtotal: 1150, gst: 207, discount: 0, total: 1357, cashier: 'John Cashier', payment: 'Cash', customer: 'Walk-in Customer' },
+                { id: 2, billNo: '00124', date: `${d} 11:45`, items: [{ product: 'Mechanical Keyboard', price: 800, quantity: 1, total: 800 }], subtotal: 800, gst: 144, discount: 50, total: 894, cashier: 'Store Manager', payment: 'Card', customer: 'Regular Customer' }
+            ];
+        })();
+
+        let systemSettings = JSON.parse(localStorage.getItem('systemSettings') || 'null') || {
+            gstPercentage: 18, cgstPercentage: 9, sgstPercentage: 9,
+            companyName: 'Sai-Bill Retail Store', companyAddress: '123 Pune 411009',
+            companyPhone: '1800-123-456', gstinNumber: '27ABCDE1234F1Z5',
+            receiptFooter: 'Thank you for shopping with us!'
+        };
+
+        // Global Variables
+        let currentBill = [];
+        let billTotal = 0;
+        let scannerActive = false;
+        let quaggaStarting = false;
+        let quaggaRunning = false;
+        let lastBarcodeDetectAt = 0;
+        let lastBarcodeValue = '';
+        function onQuaggaDetected(result) {
+            const code = result && result.codeResult && result.codeResult.code;
+            if (!code) return;
+            const now = Date.now();
+            if (code === lastBarcodeValue && now - lastBarcodeDetectAt < 1800) return;
+            lastBarcodeValue = code;
+            lastBarcodeDetectAt = now;
+            handleBarcodeScan(code);
+            try { playScanSound(); } catch (e) {}
+            const st = document.getElementById('scannerStatus');
+            if (st) {
+                st.textContent = '🟢 Scanned: ' + code;
+                st.className = 'scanner-status status-active';
+            }
+        }
+        let billCounter = Math.max(...(salesDatabase.map(s => parseInt(s.billNo) || 0)), 124);
+        let currentUser = null;
+        let selectedRole = 'cashier';
+        let currentTab = 'dashboard';
+        let salesChart = null;
+
+        // ===== CURRENT DATE/TIME HELPERS =====
+        function getCurrentDateTime() {
+            const now = new Date();
+            return now.toLocaleString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        }
+        function getCurrentDate() {
+            return new Date().toLocaleDateString('en-CA');
+        }
+        function getCurrentDateDisplay() {
+            return new Date().toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        }
+        /** Normalize any stored sale.date to YYYY-MM-DD for "today" comparisons (handles en-IN DD/MM/YYYY and ISO). */
+        function parseSaleCalendarKey(sale) {
+            if (!sale || !sale.date) return '';
+            const raw = String(sale.date).trim();
+            const isoHead = raw.match(/^(\d{4}-\d{2}-\d{2})/);
+            if (isoHead) return isoHead[1];
+            const slash = raw.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+            if (slash) return `${slash[3]}-${slash[2].padStart(2, '0')}-${slash[1].padStart(2, '0')}`;
+            const d = new Date(raw);
+            if (!isNaN(d.getTime())) return d.toLocaleDateString('en-CA');
+            return '';
+        }
+
+        // ===== AUTO SAVE =====
+        function saveAllData() {
+            localStorage.setItem('productDatabase', JSON.stringify(productDatabase));
+            localStorage.setItem('salesDatabase', JSON.stringify(salesDatabase));
+            localStorage.setItem('usersDatabase', JSON.stringify(usersDatabase));
+            localStorage.setItem('systemSettings', JSON.stringify(systemSettings));
+
+            // Try MySQL
+            fetch('save.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: 'auto_save', timestamp: new Date().toISOString(), products: productDatabase, sales: salesDatabase, users: usersDatabase, settings: systemSettings })
+            }).then(r => r.json()).then(d => {
+                const el = document.getElementById('autoSaveStatus');
+                if (el) el.textContent = `Saved: ${getCurrentDateTime()}`;
+            }).catch(() => {
+                const el = document.getElementById('autoSaveStatus');
+                if (el) el.textContent = `Local save: ${getCurrentDateTime()}`;
+            });
+        }
+
+// ===== LIVE SYNC SCRIPT =====
+    // Load live data from DB
+    async function loadLiveData(type = 'all') {
+        try {
+            const response = await fetch('load_data.php?type=' + type);
+            const result = await response.json();
+            if (result.status === 'success') {
+                if (type === 'products') {
+                    Object.assign(productDatabase, result.data);
+                    localStorage.setItem('productDatabase', JSON.stringify(productDatabase));
+                    loadQuickProducts();
+                    loadInventory();
+                } else if (type === 'sales') {
+                    salesDatabase = result.data;
+                    localStorage.setItem('salesDatabase', JSON.stringify(salesDatabase));
+                    loadRecentTransactions();
+                } else if (type === 'stats') {
+                    updateStats();
+                }
+                showNotification('Live data updated from database!', 'success');
+            }
+        } catch (e) {
+            console.log('Live sync failed:', e);
+        }
+    }
+
+// Try live sync on init
+loadLiveData('products');
+loadLiveData('sales');
+setInterval(() => loadLiveData('stats'), 30000);
+
+// ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', function () {
+            checkLoginStatus();
+            updateTime();
+            setInterval(updateTime, 1000);
+            initScanner();
+            loadSystemSettings();
+            setInterval(saveAllData, 30000);
+
+            const tagline = document.querySelector('.tagline');
+            if (tagline) {
+                const saveStatus = document.createElement('div');
+                saveStatus.id = 'autoSaveStatus';
+                saveStatus.style.cssText = 'font-size:0.75rem;color:#fff;opacity:0.7;margin-top:2px;';
+                tagline.after(saveStatus);
+            }
+        });
+
+        // ===== LOGIN SYSTEM =====
+        function selectRole(role) {
+            selectedRole = role;
+            document.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('selected'));
+            event.target.closest('.role-option').classList.add('selected');
+            const usernameInput = document.getElementById('username');
+            if (role === 'owner') usernameInput.value = 'admin';
+            else if (role === 'manager') usernameInput.value = 'manager';
+            else if (role === 'cashier') usernameInput.value = 'cashier';
+        }
+
+        function login() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const branch = document.getElementById('branch').value;
+
+            // Reload from localStorage to get any newly added users
+            const freshUsers = JSON.parse(localStorage.getItem('usersDatabase') || 'null');
+            if (freshUsers) Object.assign(usersDatabase, freshUsers);
+
+            const user = usersDatabase[username];
+            if (user && user.password === password) {
+                currentUser = { username, name: user.name, role: user.role, branch, avatar: user.avatar, permissions: user.permissions };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                sessionStorage.setItem('saiBillAuth', '1');
+
+                logActivity('LOGIN', `User ${user.name} (${user.role}) logged in from branch: ${branch}`, user.name);
+
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('mainHeader').style.display = 'block';
+                document.getElementById('mainContent').style.display = 'block';
+
+                updateUIForRole();
+                loadDashboardData();
+                loadQuickProducts();
+                updateStats();
+                loadInventory();
+                loadRecentTransactions();
+                playLoginSound();
+                showNotification(`Welcome, ${user.name}! (${user.role})`, 'success');
+            } else {
+                // Check if username exists but wrong password
+                if (usersDatabase[username]) {
+                    showNotification('Incorrect password!', 'error');
+                } else {
+                    showNotification('Username not found!', 'error');
+                }
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        }
+
+        function updateUIForRole() {
+            if (!currentUser) return;
+            const role = currentUser.role;
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userRole').textContent = role.charAt(0).toUpperCase() + role.slice(1);
+            document.getElementById('userRole').className = `user-role ${role}`;
+            document.getElementById('userAvatar').textContent = currentUser.avatar;
+            document.getElementById('currentUserRole').textContent = role.charAt(0).toUpperCase() + role.slice(1);
+            document.getElementById('cashierName').textContent = currentUser.name;
+            document.getElementById('receiptCashier').textContent = currentUser.name;
+
+            if (role === 'owner') {
+                document.querySelectorAll('.feature-owner-only').forEach(el => el.style.display = 'block');
+                document.querySelectorAll('.feature-manager-up').forEach(el => el.style.display = 'block');
+            } else if (role === 'manager') {
+                document.querySelectorAll('.feature-owner-only').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.feature-manager-up').forEach(el => el.style.display = 'block');
+            } else {
+                document.querySelectorAll('.feature-owner-only').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.feature-manager-up').forEach(el => el.style.display = 'none');
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                logActivity('LOGOUT', `User ${currentUser.name} logged out`);
+                saveAllData();
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                sessionStorage.removeItem('saiBillAuth');
+                document.getElementById('mainHeader').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('loginModal').style.display = 'flex';
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                document.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('selected'));
+                if (scannerActive) stopScanner();
+            }
+        }
+
+        function checkLoginStatus() {
+            const savedUser = localStorage.getItem('currentUser');
+            const sessionOk = sessionStorage.getItem('saiBillAuth') === '1';
+            if (savedUser && sessionOk) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    document.getElementById('loginModal').style.display = 'none';
+                    document.getElementById('mainHeader').style.display = 'block';
+                    document.getElementById('mainContent').style.display = 'block';
+                    updateUIForRole();
+                    loadDashboardData();
+                    loadQuickProducts();
+                    updateStats();
+                    loadInventory();
+                    loadRecentTransactions();
+                } catch (e) {
+                    localStorage.removeItem('currentUser');
+                    sessionStorage.removeItem('saiBillAuth');
+                    showLoginGate();
+                }
+            } else {
+                showLoginGate();
+            }
+        }
+
+        function showLoginGate() {
+            currentUser = null;
+            const lm = document.getElementById('loginModal');
+            const mh = document.getElementById('mainHeader');
+            const mc = document.getElementById('mainContent');
+            if (lm) lm.style.display = 'flex';
+            if (mh) mh.style.display = 'none';
+            if (mc) mc.style.display = 'none';
+        }
+
+        // ===== TAB MANAGEMENT =====
+        function switchTab(tabName) {
+            currentTab = tabName;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Handle both nav link and tab button clicks
+            if (event && event.target) {
+                const tabBtn = event.target.closest('.tab-btn') || event.target.closest('a');
+                if (tabBtn) tabBtn.classList.add('active');
+            }
+
+            const tabEl = document.getElementById(tabName);
+            if (tabEl) tabEl.classList.add('active');
+
+            // Mark correct tab button active
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${tabName}'`)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            if (tabName === 'dashboard') loadDashboardData();
+            else if (tabName === 'checkout') refreshCheckoutView();
+            else if (tabName === 'inventory') loadInventory();
+            else if (tabName === 'reports') loadReport();
+            else if (tabName === 'users') loadUsersList();
+        }
+
+        // ===== DASHBOARD =====
+        function loadDashboardData() {
+            updateStats();
+            loadRecentTransactions();
+            updateTime();
+        }
+
+        function loadRecentTransactions() {
+            const container = document.getElementById('recentTransactions');
+            container.innerHTML = '';
+            if (!salesDatabase.length) {
+                container.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#888;">No transactions yet. Complete a sale from POS or Bill Checkout.</td></tr>';
+                return;
+            }
+            salesDatabase.slice(-10).reverse().forEach(sale => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${sale.billNo}</strong></td>
+                    <td>${sale.date}</td>
+                    <td><strong>₹${sale.total.toFixed(2)}</strong></td>
+                    <td>${sale.items.length} item(s)</td>
+                    <td>${sale.cashier}</td>
+                    <td><span class="badge badge-success">✅ Paid</span></td>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function updateStats() {
+            const today = getCurrentDate();
+            const todaySalesList = salesDatabase.filter(s => parseSaleCalendarKey(s) === today);
+            const totalSales = todaySalesList.reduce((sum, s) => sum + s.total, 0);
+            const todayTransactions = todaySalesList.length;
+            const avgBill = todaySalesList.length > 0 ? totalSales / todaySalesList.length : 0;
+
+            document.getElementById('todaySales').textContent = `₹${totalSales.toFixed(2)}`;
+            document.getElementById('transactions').textContent = todayTransactions;
+            document.getElementById('scansToday').textContent = todaySalesList.reduce((sum, s) => sum + (s.items || []).reduce((si, i) => si + (i.quantity || 0), 0), 0);
+            document.getElementById('avgBill').textContent = `₹${avgBill.toFixed(2)}`;
+        }
+
+        function updateTransactionCount() { updateStats(); }
+        function updateTodaySales() { updateStats(); }
+
+        // ===== POS FUNCTIONS =====
+        function addToBill(product, quantity = 1) {
+            if (product.stock < quantity) {
+                showNotification(`Only ${product.stock} items in stock!`, 'warning');
+                return;
+            }
+            const existingIndex = currentBill.findIndex(item => item.barcode === product.barcode);
+            if (existingIndex > -1) {
+                if (productDatabase[product.barcode].stock < 1) {
+                    showNotification('No more stock available!', 'error');
+                    return;
+                }
+                currentBill[existingIndex].quantity += quantity;
+                currentBill[existingIndex].total = currentBill[existingIndex].price * currentBill[existingIndex].quantity;
+            } else {
+                currentBill.push({ ...product, quantity, total: product.price * quantity });
+            }
+            productDatabase[product.barcode].stock -= quantity;
+            updateBillDisplay();
+            updateReceiptPreview();
+            updateStats();
+            playScanSound();
+            document.getElementById('barcodeInput').focus();
+            updateGSTBreakdown();
+            logActivity('SCAN', `Added ${product.name} x${quantity} to bill`, currentUser ? currentUser.name : 'Cashier');
+        }
+
+        function updateBillDisplay() {
+            const billItemsContainer = document.getElementById('billItems');
+            billTotal = currentBill.reduce((sum, item) => sum + item.total, 0);
+            billItemsContainer.innerHTML = '';
+            currentBill.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><code>${item.barcode}</code></td>
+                    <td><strong>${item.name}</strong><br><small>${item.category}</small></td>
+                    <td>₹${item.price.toFixed(2)}</td>
+                    <td>
+                        <button onclick="updateQuantity(${index}, -1)" style="padding:4px 8px;margin-right:5px;cursor:pointer;">-</button>
+                        <strong>${item.quantity}</strong>
+                        <button onclick="updateQuantity(${index}, 1)" style="padding:4px 8px;margin-left:5px;cursor:pointer;">+</button>
+                    </td>
+                    <td>₹${item.total.toFixed(2)}</td>
+                    <td><button onclick="removeFromBill(${index})" class="btn btn-danger" style="padding:4px 12px;">Remove</button></td>
+                `;
+                billItemsContainer.appendChild(row);
+            });
+            updateBillSummary();
+        }
+
+        function updateBillSummary() {
+            const gst = billTotal * (systemSettings.gstPercentage / 100);
+            const discountText = document.getElementById('discountAmount').textContent.replace('₹', '').replace('-', '').trim();
+            const discount = parseFloat(discountText) || 0;
+            const finalTotal = billTotal + gst - discount;
+            document.getElementById('billTotal').textContent = `₹${finalTotal.toFixed(2)}`;
+            document.getElementById('itemCount').textContent = currentBill.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('taxAmount').textContent = `₹${gst.toFixed(2)}`;
+            document.getElementById('receiptTotal').textContent = `₹${finalTotal.toFixed(2)}`;
+        }
+
+        function updateQuantity(index, change) {
+            const item = currentBill[index];
+            const newQuantity = item.quantity + change;
+            if (change > 0 && productDatabase[item.barcode].stock < 1) {
+                showNotification('No more stock!', 'warning');
+                return;
+            }
+            if (newQuantity > 0) {
+                productDatabase[item.barcode].stock -= change;
+                item.quantity = newQuantity;
+                item.total = item.price * newQuantity;
+                updateBillDisplay();
+                updateReceiptPreview();
+                updateGSTBreakdown();
+            } else {
+                removeFromBill(index);
+            }
+        }
+
+        function removeFromBill(index) {
+            const item = currentBill[index];
+            productDatabase[item.barcode].stock += item.quantity;
+            currentBill.splice(index, 1);
+            updateBillDisplay();
+            updateReceiptPreview();
+            updateGSTBreakdown();
+        }
+
+        function updateGSTBreakdown() {
+            const gst = billTotal * (systemSettings.gstPercentage / 100);
+            document.getElementById('cgstAmount').textContent = `₹${(gst / 2).toFixed(2)}`;
+            document.getElementById('sgstAmount').textContent = `₹${(gst / 2).toFixed(2)}`;
+            document.getElementById('totalGst').textContent = `₹${gst.toFixed(2)}`;
+        }
+
+        function applyDiscount() {
+            if (!currentUser) return;
+            if (billTotal === 0) { showNotification('No items in bill!', 'warning'); return; }
+            const discountPercent = prompt('Enter discount percentage (0-100):', '10');
+            if (discountPercent !== null && !isNaN(discountPercent) && discountPercent >= 0 && discountPercent <= 100) {
+                const discount = billTotal * (parseFloat(discountPercent) / 100);
+                document.getElementById('discountAmount').textContent = `-₹${discount.toFixed(2)}`;
+                updateBillSummary();
+                updateReceiptPreview();
+                logActivity('DISCOUNT', `Applied ${discountPercent}% discount = ₹${discount.toFixed(2)}`);
+            }
+        }
+
+        function editBillDetails() {
+            if (!currentUser || !['owner', 'manager'].includes(currentUser.role)) {
+                showNotification('Only managers and owners can edit bills!', 'error'); return;
+            }
+            document.getElementById('editBillModal').style.display = 'flex';
+        }
+
+        function saveBillEdits() {
+            const customerName = document.getElementById('editCustomerName').value;
+            const discountPct = parseFloat(document.getElementById('editDiscount').value) || 0;
+            if (customerName) document.getElementById('cashierName').textContent = customerName;
+            if (discountPct > 0 && billTotal > 0) {
+                const discount = billTotal * (discountPct / 100);
+                document.getElementById('discountAmount').textContent = `-₹${discount.toFixed(2)}`;
+                updateBillSummary();
+                updateReceiptPreview();
+            }
+            closeModal('editBillModal');
+            showNotification('Bill details updated!', 'success');
+        }
+
+        function processSale(customerName, paymentMethod, opts) {
+            opts = opts || {};
+            const autoPrint = opts.autoPrint !== false;
+            const subtotal = billTotal;
+            const gst = subtotal * (systemSettings.gstPercentage / 100);
+            const discountText = document.getElementById('discountAmount').textContent.replace('₹', '').replace('-', '').trim();
+            const discount = parseFloat(discountText) || 0;
+            const total = subtotal + gst - discount;
+            billCounter++;
+
+            const newSale = {
+                id: salesDatabase.length + 1,
+                billNo: billCounter.toString().padStart(5, '0'),
+                date: getCurrentDateTime(),
+                items: currentBill.map(item => ({ product: item.name, barcode: item.barcode, price: item.price, quantity: item.quantity, total: item.total })),
+                subtotal, gst, discount, total,
+                cashier: currentUser.name,
+                payment: paymentMethod,
+                customer: customerName
+            };
+
+            salesDatabase.push(newSale);
+
+            try {
+                fetch('save_bill.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        bill_no: newSale.billNo,
+                        total: newSale.total,
+                        cashier: newSale.cashier
+                    })
+                })
+                .then(r => r.json())
+                .then(res => {
+                    if (res.status !== 'success') {
+                        console.error('save_bill.php error:', res);
+                        showNotification('Bill saved locally, but DB save failed: ' + (res.message || ''), 'warning');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error calling save_bill.php:', err);
+                    showNotification('Bill saved locally, but DB request failed.', 'warning');
+                });
+            } catch (e) {
+                console.error('Unexpected error calling save_bill.php:', e);
+            }
+
+            generateReceipt(customerName, paymentMethod, total, newSale);
+            let saleLog = `Bill #${newSale.billNo} - ₹${total.toFixed(2)} - ${customerName} - ${paymentMethod} - ${newSale.items.length} items`;
+            if (opts.razorpay && opts.razorpay.razorpay_payment_id) saleLog += ` | razorpay_payment_id:${opts.razorpay.razorpay_payment_id}`;
+            logActivity('SALE', saleLog);
+
+            saveAllData();
+            updateStats();
+            loadRecentTransactions();
+
+            currentBill = [];
+            updateBillDisplay();
+            updateReceiptPreview();
+            document.getElementById('discountAmount').textContent = '₹0.00';
+            updateGSTBreakdown();
+            document.getElementById('receiptBillNo').textContent = newSale.billNo;
+            refreshCheckoutView();
+            loadInventory();
+
+            if (autoPrint) {
+                setTimeout(() => {
+                    printReceipt();
+                    closeModal('receiptModal');
+                    switchTab('pos');
+                }, 0);
+            } else {
+                document.getElementById('receiptModal').style.display = 'flex';
+            }
+        }
+
+        async function startRazorpayPayment() {
+            if (currentBill.length === 0) {
+                showNotification('No items in the bill!', 'warning');
+                return;
+            }
+            if (typeof Razorpay === 'undefined') {
+                showNotification('Razorpay script failed to load. Check your network.', 'error');
+                return;
+            }
+            const { total } = getCheckoutTotals();
+            const amountPaise = Math.round(total * 100);
+            if (amountPaise < 100) {
+                showNotification('Amount must be at least ₹1.', 'error');
+                return;
+            }
+            const customerName = (document.getElementById('checkoutCustomer') && document.getElementById('checkoutCustomer').value.trim()) || 'Walk-in Customer';
+            try {
+                const res = await fetch('razorpay_create_order.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount: amountPaise })
+                });
+                const data = await res.json();
+                if (data.status !== 'success') {
+                    showNotification(data.message || 'Could not create Razorpay order', 'error');
+                    return;
+                }
+                const options = {
+                    key: data.key_id,
+                    amount: data.amount,
+                    currency: 'INR',
+                    order_id: data.order_id,
+                    name: systemSettings.companyName,
+                    description: 'Bill payment',
+                    handler: function (response) {
+                        const payId = response.razorpay_payment_id || '';
+                        const label = payId ? ('Razorpay ' + payId) : 'Razorpay';
+                        processSale(customerName, label, { autoPrint: true, razorpay: response });
+                    },
+                    prefill: { name: customerName },
+                    theme: { color: '#1e3c72' },
+                    modal: { ondismiss: function () { /* user closed */ } }
+                };
+                const rzp = new Razorpay(options);
+                rzp.on('payment.failed', function (resp) {
+                    showNotification('Payment failed: ' + (resp.error && resp.error.description ? resp.error.description : 'Try again'), 'error');
+                });
+                rzp.open();
+            } catch (e) {
+                console.error(e);
+                showNotification('Razorpay: ' + (e.message || 'request failed'), 'error');
+            }
+        }
+
+        function getCheckoutTotals() {
+            const subtotal = billTotal;
+            const gst = subtotal * (systemSettings.gstPercentage / 100);
+            const discountText = document.getElementById('discountAmount').textContent.replace('₹', '').replace('-', '').trim();
+            const discount = parseFloat(discountText) || 0;
+            const total = subtotal + gst - discount;
+            return { subtotal, gst, discount, total };
+        }
+
+        function refreshCheckoutView() {
+            const emptyEl = document.getElementById('checkoutEmpty');
+            const bodyEl = document.getElementById('checkoutBody');
+            if (!emptyEl || !bodyEl) return;
+            if (currentBill.length === 0) {
+                emptyEl.style.display = 'block';
+                bodyEl.style.display = 'none';
+                return;
+            }
+            emptyEl.style.display = 'none';
+            bodyEl.style.display = 'block';
+            const { subtotal, gst, discount, total } = getCheckoutTotals();
+            const payEl = document.getElementById('checkoutPayable');
+            if (payEl) payEl.textContent = `₹${total.toFixed(2)}`;
+            const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+            set('checkoutSubtotal', `₹${subtotal.toFixed(2)}`);
+            set('checkoutGst', `₹${gst.toFixed(2)}`);
+            set('checkoutDiscount', `₹${discount.toFixed(2)}`);
+            set('checkoutItemCount', String(currentBill.reduce((n, i) => n + i.quantity, 0)));
+        }
+
+        function openCheckoutTab() {
+            refreshCheckoutView();
+            switchTab('checkout');
+        }
+
+        function goToCheckout() {
+            if (currentBill.length === 0) {
+                showNotification('Add items to the bill first.', 'warning');
+                return;
+            }
+            openCheckoutTab();
+        }
+
+        function completeCheckoutSale() {
+            if (currentBill.length === 0) {
+                showNotification('No items in the bill!', 'warning');
+                return;
+            }
+            const customerName = (document.getElementById('checkoutCustomer') && document.getElementById('checkoutCustomer').value.trim()) || 'Walk-in Customer';
+            const radio = document.querySelector('input[name="checkoutPay"]:checked');
+            const paymentMethod = radio ? radio.value : 'Cash';
+            processSale(customerName, paymentMethod, { autoPrint: true });
+        }
+
+        function generateReceipt(customerName, paymentMethod, total, saleData) {
+            const printableReceipt = document.getElementById('printableReceipt');
+            const subtotal = billTotal;
+            const gst = subtotal * (systemSettings.gstPercentage / 100);
+            const cgst = gst / 2, sgst = gst / 2;
+            const discount = parseFloat(document.getElementById('discountAmount').textContent.replace('₹', '').replace('-', '').trim()) || 0;
+            const billNo = saleData ? saleData.billNo : billCounter.toString().padStart(5, '0');
+            const dateStr = getCurrentDateTime();
+
+            let itemsHTML = '';
+            currentBill.length > 0 ? currentBill.forEach(item => {
+                itemsHTML += `<div class="receipt-item"><span>${item.name} x${item.quantity}</span><span>₹${item.total.toFixed(2)}</span></div>`;
+            }) : (saleData && saleData.items.forEach(item => {
+                itemsHTML += `<div class="receipt-item"><span>${item.product} x${item.quantity}</span><span>₹${item.total.toFixed(2)}</span></div>`;
+            }));
+
+            printableReceipt.innerHTML = `
+                <div class="receipt-header">
+                    <h2>${systemSettings.companyName}</h2>
+                    <p>${systemSettings.companyAddress}</p>
+                    <p>Phone: ${systemSettings.companyPhone}</p>
+                    <p>GSTIN: ${systemSettings.gstinNumber}</p>
+                    <p>--------------------------------</p>
+                    <p>Bill #: <strong>${billNo}</strong></p>
+                    <p>Date: <strong>${dateStr}</strong></p>
+                    <p>Customer: ${customerName}</p>
+                    <p>Cashier: ${currentUser ? currentUser.name : 'System'}</p>
+                    <p>Payment: ${paymentMethod}</p>
+                </div>
+                <div style="margin-top:1rem;">
+                    ${itemsHTML}
+                    <div class="receipt-item"><span>--------------------------------</span></div>
+                    <div class="receipt-item"><span>Subtotal:</span><span>₹${subtotal.toFixed(2)}</span></div>
+                    <div class="receipt-item"><span>Discount:</span><span>-₹${discount.toFixed(2)}</span></div>
+                    <div class="receipt-item"><span>CGST (${systemSettings.cgstPercentage}%):</span><span>₹${cgst.toFixed(2)}</span></div>
+                    <div class="receipt-item"><span>SGST (${systemSettings.sgstPercentage}%):</span><span>₹${sgst.toFixed(2)}</span></div>
+                    <div class="receipt-total"><div class="receipt-item"><span><strong>TOTAL:</strong></span><span><strong>₹${total.toFixed(2)}</strong></span></div></div>
+                    <div style="text-align:center;margin-top:2rem;">
+                        <p>${systemSettings.receiptFooter}</p>
+                        <p style="font-size:0.8rem;">** Computer generated receipt **</p>
+                        <p style="font-size:0.8rem;">Printed: ${dateStr}</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('receiptBillNo').textContent = billNo;
+            document.getElementById('receiptDate').textContent = dateStr;
+            document.getElementById('receiptCashier').textContent = currentUser ? currentUser.name : 'System';
+        }
+
+        // ===== INVENTORY FUNCTIONS =====
+        function loadInventory() {
+            const container = document.getElementById('inventoryTable');
+            container.innerHTML = '';
+            let totalProducts = 0, totalValue = 0, lowStockCount = 0, outOfStockCount = 0;
+
+            Object.values(productDatabase).forEach(product => {
+                const stockValue = product.price * product.stock;
+                totalProducts++;
+                totalValue += stockValue;
+                if (product.stock < product.minStock) lowStockCount++;
+                if (product.stock === 0) outOfStockCount++;
+
+                const stockClass = product.stock === 0 ? 'stock-low' : product.stock < product.minStock ? 'stock-medium' : 'stock-high';
+                const stockText = product.stock === 0 ? '❌ Out of Stock' : product.stock < product.minStock ? '⚠️ Low Stock' : '✅ In Stock';
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><code>${product.barcode}</code></td>
+                    <td><strong>${product.name}</strong></td>
+                    <td>${product.category}</td>
+                    <td>₹${product.price.toFixed(2)}</td>
+                    <td><span class="${stockClass}">${product.stock} units</span><br><small>${stockText}</small></td>
+                    <td>₹${stockValue.toFixed(2)}</td>
+                    <td>
+                        <div class="stock-actions">
+                            <input type="number" class="stock-input" value="${product.stock}" id="stock_${product.barcode}" min="0">
+                            <button class="btn btn-success" onclick="saveStockInput('${product.barcode}')" style="padding:4px 8px;">Save</button>
+                            <button class="btn btn-warning" onclick="editProduct('${product.barcode}')" style="padding:4px 8px;">Edit</button>
+                            <button class="btn btn-danger" onclick="deleteProduct('${product.barcode}')" style="padding:4px 8px;">Delete</button>
+                        </div>
+                    </td>
+                `;
+                container.appendChild(row);
+            });
+
+            document.getElementById('totalProducts').textContent = totalProducts;
+            document.getElementById('totalStockValue').textContent = `₹${totalValue.toFixed(0)}`;
+            document.getElementById('lowStockItems').textContent = lowStockCount;
+            document.getElementById('outOfStock').textContent = outOfStockCount;
+        }
+
+        function saveStockInput(barcode) {
+            if (!['owner', 'manager'].includes(currentUser.role)) {
+                showNotification('Only managers and owners can update stock!', 'error'); return;
+            }
+            const inputEl = document.getElementById(`stock_${barcode}`);
+            const newStock = parseInt(inputEl.value);
+            if (isNaN(newStock) || newStock < 0) { showNotification('Invalid stock value!', 'error'); return; }
+            const oldStock = productDatabase[barcode].stock;
+            productDatabase[barcode].stock = newStock;
+            productDatabase[barcode].lastUpdated = getCurrentDateDisplay();
+            logActivity('STOCK_UPDATE', `${productDatabase[barcode].name}: ${oldStock} → ${newStock}`);
+            saveAllData();
+            loadInventory();
+            loadQuickProducts();
+            showNotification(`Stock updated: ${productDatabase[barcode].name} = ${newStock}`, 'success');
+        }
+
+        function updateStock(barcode, newStock) { saveStockInput(barcode); }
+
+        // ===== BULK UPDATE =====
+        function updateStockBulk() {
+            if (!['owner', 'manager'].includes(currentUser.role)) {
+                showNotification('Only managers and owners can bulk update!', 'error'); return;
+            }
+            const tbody = document.getElementById('bulkUpdateBody');
+            tbody.innerHTML = '';
+            Object.values(productDatabase).forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${product.name}</strong></td>
+                    <td><code>${product.barcode}</code></td>
+                    <td><span class="${product.stock < product.minStock ? 'stock-low' : 'stock-high'}">${product.stock}</span></td>
+                    <td><input type="number" class="stock-input" id="bulk_${product.barcode}" value="${product.stock}" min="0" style="width:90px;"></td>
+                `;
+                tbody.appendChild(row);
+            });
+            document.getElementById('bulkUpdateModal').style.display = 'flex';
+        }
+
+        function applyBulkUpdate() {
+            let updatedCount = 0;
+            Object.keys(productDatabase).forEach(barcode => {
+                const input = document.getElementById(`bulk_${barcode}`);
+                if (input) {
+                    const newStock = parseInt(input.value);
+                    if (!isNaN(newStock) && newStock >= 0 && newStock !== productDatabase[barcode].stock) {
+                        logActivity('BULK_STOCK', `${productDatabase[barcode].name}: ${productDatabase[barcode].stock} → ${newStock}`);
+                        productDatabase[barcode].stock = newStock;
+                        productDatabase[barcode].lastUpdated = getCurrentDateDisplay();
+                        updatedCount++;
+                    }
+                }
+            });
+            saveAllData();
+            closeModal('bulkUpdateModal');
+            loadInventory();
+            loadQuickProducts();
+            showNotification(`Bulk update complete! ${updatedCount} products updated.`, 'success');
+        }
+
+        // ===== EXPORT INVENTORY =====
+        function exportInventory() {
+            const headers = ['Barcode', 'Product Name', 'Category', 'Price (INR)', 'Stock', 'Min Stock', 'Max Stock', 'Stock Value', 'Last Updated'];
+            const rows = Object.values(productDatabase).map(p => [
+                p.barcode, p.name, p.category, p.price.toFixed(2), p.stock, p.minStock || 10, p.maxStock || 100,
+                (p.price * p.stock).toFixed(2), p.lastUpdated || getCurrentDateDisplay()
+            ]);
+            const csvContent = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Inventory_${getCurrentDate()}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            logActivity('EXPORT', `Inventory exported as CSV - ${Object.keys(productDatabase).length} products`);
+            showNotification('Inventory exported as CSV!', 'success');
+        }
+
+        // ===== PRINT INVENTORY LIST =====
+        function printInventory() {
+            const today = getCurrentDateTime();
+            let tableHTML = `
+                <html><head><title>Inventory List</title>
+                <style>
+                    body { font-family: Arial, sans-serif; font-size: 12px; }
+                    h2 { text-align: center; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+                    th { background: #1e3c72; color: white; padding: 8px; text-align: left; }
+                    td { padding: 6px 8px; border-bottom: 1px solid #ddd; }
+                    tr:nth-child(even) { background: #f5f5f5; }
+                    .low { color: red; font-weight: bold; }
+                    .ok { color: green; }
+                    .footer { text-align: center; margin-top: 20px; font-size: 11px; color: #666; }
+                </style></head><body>
+                <h2>${systemSettings.companyName}</h2>
+                <p style="text-align:center;">Inventory Report | Generated: ${today}</p>
+                <table>
+                    <thead><tr><th>#</th><th>Barcode</th><th>Product</th><th>Category</th><th>Price (₹)</th><th>Stock</th><th>Status</th><th>Stock Value</th><th>Last Updated</th></tr></thead>
+                    <tbody>
+            `;
+            let i = 1, totalVal = 0;
+            Object.values(productDatabase).forEach(p => {
+                const val = p.price * p.stock;
+                totalVal += val;
+                const status = p.stock === 0 ? 'Out of Stock' : p.stock < p.minStock ? 'Low Stock' : 'In Stock';
+                const cls = p.stock === 0 ? 'low' : p.stock < p.minStock ? 'low' : 'ok';
+                tableHTML += `<tr><td>${i++}</td><td>${p.barcode}</td><td><strong>${p.name}</strong></td><td>${p.category}</td><td>₹${p.price.toFixed(2)}</td><td>${p.stock}</td><td class="${cls}">${status}</td><td>₹${val.toFixed(2)}</td><td>${p.lastUpdated || '-'}</td></tr>`;
+            });
+            tableHTML += `</tbody></table>
+                <p style="text-align:right;margin-top:10px;font-weight:bold;">Total Stock Value: ₹${totalVal.toFixed(2)}</p>
+                <div class="footer"><p>Printed by: ${currentUser.name} | ${today}</p></div>
+                </body></html>`;
+            const win = window.open('', '_blank');
+            win.document.write(tableHTML);
+            win.document.close();
+            win.print();
+            logActivity('PRINT', `Inventory list printed - ${Object.keys(productDatabase).length} products`);
+        }
+
+        // ===== PRODUCT MANAGEMENT =====
+        function showAddProductModal() {
+            if (!['owner', 'manager'].includes(currentUser.role)) {
+                showNotification('Only managers and owners can add products!', 'error'); return;
+            }
+            document.getElementById('addProductModal').style.display = 'flex';
+        }
+
+        function addNewProduct() {
+            const name = document.getElementById('productName').value.trim();
+            const barcode = document.getElementById('productBarcode').value.trim();
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const category = document.getElementById('productCategory').value;
+            const stock = parseInt(document.getElementById('productStock').value) || 0;
+
+            if (!name || !barcode || !price) { showNotification('Fill all required fields!', 'error'); return; }
+            if (productDatabase[barcode]) { showNotification('Barcode already exists!', 'error'); return; }
+
+            productDatabase[barcode] = {
+                id: Object.keys(productDatabase).length + 1, name, price, category,
+                barcode, stock, minStock: 10, maxStock: 100, lastUpdated: getCurrentDateDisplay()
+            };
+            logActivity('ADD_PRODUCT', `Added: ${name} | Barcode: ${barcode} | Price: ₹${price} | Stock: ${stock}`);
+            saveAllData();
+            closeModal('addProductModal');
+            document.getElementById('productName').value = '';
+            document.getElementById('productBarcode').value = '';
+            document.getElementById('productPrice').value = '';
+            document.getElementById('productStock').value = '10';
+            loadInventory();
+            loadQuickProducts();
+            showNotification(`Product "${name}" added!`, 'success');
+        }
+
+        // ===== QUICK ADD PRODUCT TO POS =====
+        function showQuickAddModal() {
+            document.getElementById('quickAddProductModal').style.display = 'flex';
+        }
+
+        function quickAddProductToPOS() {
+            const name = document.getElementById('qaProductName').value.trim();
+            const barcode = document.getElementById('qaProductBarcode').value.trim();
+            const price = parseFloat(document.getElementById('qaProductPrice').value);
+            const category = document.getElementById('qaProductCategory').value;
+            const stock = parseInt(document.getElementById('qaProductStock').value) || 10;
+
+            if (!name || !barcode || !price) { showNotification('Fill all required fields!', 'error'); return; }
+            if (!productDatabase[barcode]) {
+                productDatabase[barcode] = { id: Object.keys(productDatabase).length + 1, name, price, category, barcode, stock, minStock: 10, maxStock: 100, lastUpdated: getCurrentDateDisplay() };
+                logActivity('QUICK_ADD_PRODUCT', `Quick added: ${name} | Barcode: ${barcode}`);
+                saveAllData();
+                loadInventory();
+                loadQuickProducts();
+            }
+            closeModal('quickAddProductModal');
+            addToBill(productDatabase[barcode]);
+            clearQuickAddForm();
+            showNotification(`"${name}" added to bill!`, 'success');
+        }
+
+        function quickAddProductOnly() {
+            const name = document.getElementById('qaProductName').value.trim();
+            const barcode = document.getElementById('qaProductBarcode').value.trim();
+            const price = parseFloat(document.getElementById('qaProductPrice').value);
+            const category = document.getElementById('qaProductCategory').value;
+            const stock = parseInt(document.getElementById('qaProductStock').value) || 10;
+
+            if (!name || !barcode || !price) { showNotification('Fill all required fields!', 'error'); return; }
+            if (productDatabase[barcode]) { showNotification('Barcode already exists!', 'error'); return; }
+            productDatabase[barcode] = { id: Object.keys(productDatabase).length + 1, name, price, category, barcode, stock, minStock: 10, maxStock: 100, lastUpdated: getCurrentDateDisplay() };
+            logActivity('ADD_PRODUCT', `Added: ${name} | Barcode: ${barcode}`);
+            saveAllData();
+            closeModal('quickAddProductModal');
+            clearQuickAddForm();
+            loadInventory();
+            loadQuickProducts();
+            showNotification(`"${name}" added to inventory!`, 'success');
+        }
+
+        function clearQuickAddForm() {
+            ['qaProductName', 'qaProductBarcode', 'qaProductPrice', 'qaProductStock'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = id === 'qaProductStock' ? '10' : '';
+            });
+        }
+
+        function editProduct(barcode) {
+            if (!['owner', 'manager'].includes(currentUser.role)) {
+                showNotification('Only managers and owners can edit products!', 'error'); return;
+            }
+            const product = productDatabase[barcode];
+            const newName = prompt('Product Name:', product.name);
+            if (newName === null) return;
+            const newPrice = prompt('Price (₹):', product.price);
+            if (newPrice === null) return;
+            const newMin = prompt('Min Stock:', product.minStock || 10);
+            if (newMin === null) return;
+            if (!isNaN(newPrice) && parseFloat(newPrice) > 0) {
+                logActivity('EDIT_PRODUCT', `${product.name} → Name:${newName} Price:₹${newPrice} MinStock:${newMin}`);
+                product.name = newName || product.name;
+                product.price = parseFloat(newPrice);
+                product.minStock = parseInt(newMin) || 10;
+                product.lastUpdated = getCurrentDateDisplay();
+                saveAllData();
+                loadInventory();
+                loadQuickProducts();
+                showNotification(`Product updated!`, 'success');
+            }
+        }
+
+        function deleteProduct(barcode) {
+            if (currentUser.role !== 'owner') { showNotification('Only owners can delete products!', 'error'); return; }
+            const product = productDatabase[barcode];
+            if (confirm(`Delete "${product.name}"? This cannot be undone.`)) {
+                logActivity('DELETE_PRODUCT', `Deleted: ${product.name} | Barcode: ${barcode}`);
+                delete productDatabase[barcode];
+                saveAllData();
+                loadInventory();
+                loadQuickProducts();
+                showNotification(`Product deleted!`, 'warning');
+            }
+        }
+
+        // ===== SEARCH & FILTER INVENTORY =====
+        function searchInventory() {
+            const query = document.getElementById('inventorySearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#inventoryTable tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+
+        function filterInventory() {
+            const category = document.getElementById('categoryFilter').value;
+            const stockFilter = document.getElementById('stockFilter').value;
+            const rows = document.querySelectorAll('#inventoryTable tr');
+            rows.forEach(row => {
+                let show = true;
+                if (category && !row.textContent.includes(category)) show = false;
+                if (stockFilter && row.dataset) {
+                    // Keep visible based on stock text
+                }
+                row.style.display = show ? '' : 'none';
+            });
+        }
+
+        // ===== REPORTS =====
+        function loadReport() {
+            const reportType = document.getElementById('reportType').value;
+            const startDate = document.getElementById('reportStartDate').value;
+            const endDate = document.getElementById('reportEndDate').value;
+            let totalSales = 0, totalGST = 0, totalItems = 0;
+
+            if (reportType === 'sales') {
+                let reportData = salesDatabase.filter(sale => {
+                    const saleDate = (sale.date || '').split(' ')[0].split('/').reverse().join('-');
+                    try {
+                        // Try matching by comparing the date portion
+                        const d = new Date(sale.date);
+                        const sd = new Date(startDate), ed = new Date(endDate);
+                        return d >= sd && d <= ed;
+                    } catch { return true; }
+                });
+                totalSales = reportData.reduce((s, x) => s + x.total, 0);
+                totalGST = reportData.reduce((s, x) => s + x.gst, 0);
+                totalItems = reportData.reduce((s, x) => s + x.items.reduce((si, i) => si + i.quantity, 0), 0);
+
+                const container = document.getElementById('reportData');
+                const headerRow = document.getElementById('reportHeaders');
+                headerRow.innerHTML = '<th>Date/Time</th><th>Bill #</th><th>Customer</th><th>Amount (₹)</th><th>GST (₹)</th><th>Discount</th><th>Items</th><th>Cashier</th><th>Payment</th>';
+                container.innerHTML = '';
+                reportData.forEach(sale => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${sale.date}</td><td><strong>${sale.billNo}</strong></td><td>${sale.customer}</td><td>₹${sale.total.toFixed(2)}</td><td>₹${sale.gst.toFixed(2)}</td><td>₹${sale.discount.toFixed(2)}</td><td>${sale.items.reduce((s, i) => s + i.quantity, 0)}</td><td>${sale.cashier}</td><td>${sale.payment}</td>`;
+                    container.appendChild(row);
+                });
+                createSalesChart(reportData);
+            } else if (reportType === 'stock') {
+                const reportData = Object.values(productDatabase);
+                totalSales = reportData.reduce((s, p) => s + p.price * p.stock, 0);
+                const container = document.getElementById('reportData');
+                const headerRow = document.getElementById('reportHeaders');
+                headerRow.innerHTML = '<th>Barcode</th><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Stock Value</th><th>Status</th><th>Last Updated</th>';
+                container.innerHTML = '';
+                reportData.forEach(p => {
+                    const row = document.createElement('tr');
+                    const status = p.stock === 0 ? '❌ Out' : p.stock < p.minStock ? '⚠️ Low' : '✅ OK';
+                    row.innerHTML = `<td><code>${p.barcode}</code></td><td><strong>${p.name}</strong></td><td>${p.category}</td><td>₹${p.price.toFixed(2)}</td><td>${p.stock}</td><td>₹${(p.price * p.stock).toFixed(2)}</td><td>${status}</td><td>${p.lastUpdated || '-'}</td>`;
+                    container.appendChild(row);
+                });
+            } else if (reportType === 'gst') {
+                const reportData = salesDatabase;
+                totalGST = reportData.reduce((s, x) => s + x.gst, 0);
+                const container = document.getElementById('reportData');
+                const headerRow = document.getElementById('reportHeaders');
+                headerRow.innerHTML = '<th>Date</th><th>Bill #</th><th>Subtotal</th><th>CGST (₹)</th><th>SGST (₹)</th><th>Total GST</th>';
+                container.innerHTML = '';
+                reportData.forEach(sale => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${sale.date}</td><td>${sale.billNo}</td><td>₹${sale.subtotal.toFixed(2)}</td><td>₹${(sale.gst / 2).toFixed(2)}</td><td>₹${(sale.gst / 2).toFixed(2)}</td><td>₹${sale.gst.toFixed(2)}</td>`;
+                    container.appendChild(row);
+                });
+            } else if (reportType === 'user') {
+                const container = document.getElementById('reportData');
+                const headerRow = document.getElementById('reportHeaders');
+                headerRow.innerHTML = '<th>Cashier</th><th>Bills</th><th>Total Sales</th><th>Avg Bill</th>';
+                container.innerHTML = '';
+                const byUser = {};
+                salesDatabase.forEach(s => {
+                    if (!byUser[s.cashier]) byUser[s.cashier] = { bills: 0, total: 0 };
+                    byUser[s.cashier].bills++;
+                    byUser[s.cashier].total += s.total;
+                });
+                Object.entries(byUser).forEach(([name, data]) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td><strong>${name}</strong></td><td>${data.bills}</td><td>₹${data.total.toFixed(2)}</td><td>₹${(data.total / data.bills).toFixed(2)}</td>`;
+                    container.appendChild(row);
+                });
+                totalSales = salesDatabase.reduce((s, x) => s + x.total, 0);
+            }
+
+            document.getElementById('reportTotalSales').textContent = `₹${totalSales.toFixed(2)}`;
+            document.getElementById('reportTotalGST').textContent = `₹${totalGST.toFixed(2)}`;
+            document.getElementById('reportTotalItems').textContent = totalItems;
+            document.getElementById('reportAvgBill').textContent = salesDatabase.length > 0 ? `₹${(totalSales / Math.max(salesDatabase.length, 1)).toFixed(2)}` : '₹0.00';
+        }
+
+        function createSalesChart(data) {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            if (salesChart) salesChart.destroy();
+            const dateMap = {};
+            data.forEach(s => {
+                const d = s.date.split(' ')[0];
+                dateMap[d] = (dateMap[d] || 0) + s.total;
+            });
+            salesChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(dateMap),
+                    datasets: [{ label: 'Daily Sales (₹)', data: Object.values(dateMap), backgroundColor: 'rgba(75,108,183,0.7)', borderColor: '#1e3c72', borderWidth: 2 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { callback: v => '₹' + v } } } }
+            });
+        }
+
+        function exportReport() {
+            const rows = document.querySelectorAll('#reportData tr');
+            const headers = document.querySelectorAll('#reportHeaders th');
+            const headerArr = Array.from(headers).map(h => h.textContent);
+            const dataArr = Array.from(rows).map(row => Array.from(row.querySelectorAll('td')).map(td => td.textContent.trim()));
+            const csv = [headerArr, ...dataArr].map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `Report_${getCurrentDate()}.csv`;
+            a.click();
+            logActivity('EXPORT', `Report exported as CSV`);
+            showNotification('Report exported!', 'success');
+        }
+
+        function editReportData() {
+            if (currentUser.role !== 'owner') { showNotification('Only owners can edit report data!', 'error'); return; }
+            const billNo = prompt('Enter Bill # to edit:');
+            const sale = salesDatabase.find(s => s.billNo === billNo);
+            if (sale) {
+                const newTotal = prompt('Enter new total amount:', sale.total);
+                if (newTotal && !isNaN(newTotal)) {
+                    sale.total = parseFloat(newTotal);
+                    sale.gst = sale.total * (systemSettings.gstPercentage / 100) / (1 + systemSettings.gstPercentage / 100);
+                    sale.subtotal = sale.total - sale.gst;
+                    saveAllData();
+                    loadReport();
+                    showNotification('Report updated!', 'success');
+                }
+            } else {
+                showNotification('Bill not found!', 'error');
+            }
+        }
+
+        // ===== USER MANAGEMENT =====
+        function loadUsersList() {
+            if (currentUser.role !== 'owner') return;
+            const freshUsers = JSON.parse(localStorage.getItem('usersDatabase') || 'null');
+            if (freshUsers) Object.assign(usersDatabase, freshUsers);
+
+            const container = document.getElementById('usersList');
+            container.innerHTML = '';
+            const permTable = document.getElementById('userPermissionsTable');
+            permTable.innerHTML = '';
+
+            Object.keys(usersDatabase).forEach(username => {
+                const user = usersDatabase[username];
+                const hasAll = user.permissions && user.permissions.includes('all');
+                // User card
+                const userCard = document.createElement('div');
+                userCard.className = `user-card ${user.role}`;
+                userCard.innerHTML = `
+                    <div class="user-avatar">${user.avatar || '👤'}</div>
+                    <h4>${user.name}</h4>
+                    <p><strong>Username:</strong> ${username}</p>
+                    <p><strong>Role:</strong> <span class="user-role ${user.role}">${user.role.charAt(0).toUpperCase() + user.role.slice(1)}</span></p>
+                    <p><strong>Branch:</strong> ${user.branch || 'main'}</p>
+                    <p><strong>Joined:</strong> ${user.joinDate}</p>
+                    <div class="user-actions">
+                        <button class="btn btn-warning" onclick="editUser('${username}')" style="padding:6px 12px;">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteUser('${username}')" ${username === 'admin' ? 'disabled title="Cannot delete admin"' : ''} style="padding:6px 12px;">Delete</button>
+                        <button class="btn btn-primary" onclick="resetUserPassword('${username}')" style="padding:6px 12px;">Reset Pwd</button>
+                    </div>
+                `;
+                container.appendChild(userCard);
+
+                // Permissions table row
+                const perm = user.permissions || [];
+                const check = (p) => hasAll || perm.includes(p) ? '✅' : '❌';
+                const permRow = document.createElement('tr');
+                permRow.innerHTML = `
+                    <td><strong>${user.name}</strong><br><small>${username}</small></td>
+                    <td><span class="user-role ${user.role}">${user.role}</span></td>
+                    <td>${check('pos')}</td>
+                    <td>${check('inventory')}</td>
+                    <td>${check('reports')}</td>
+                    <td>${hasAll ? '✅' : '❌'}</td>
+                    <td>${hasAll ? '✅' : '❌'}</td>
+                    <td>
+                        <button class="btn btn-primary" onclick="editUser('${username}')" style="padding:4px 10px;font-size:0.85rem;">Edit</button>
+                    </td>
+                `;
+                permTable.appendChild(permRow);
+            });
+        }
+
+        function showAddUserModal() {
+            if (currentUser.role !== 'owner') { showNotification('Only owners can add users!', 'error'); return; }
+            document.getElementById('addUserModal').style.display = 'flex';
+        }
+
+        function addNewUser() {
+            const name = document.getElementById('newUserName').value.trim();
+            const username = document.getElementById('newUserUsername').value.trim();
+            const password = document.getElementById('newUserPassword').value;
+            const role = document.getElementById('newUserRole').value;
+
+            if (!name || !username || !password) { showNotification('Fill all fields!', 'error'); return; }
+            if (usersDatabase[username]) { showNotification('Username already exists!', 'error'); return; }
+
+            usersDatabase[username] = {
+                name, password, role, branch: 'main',
+                avatar: role === 'owner' ? '👑' : role === 'manager' ? '👔' : '👩‍💼',
+                permissions: role === 'owner' ? ['all'] : role === 'manager' ? ['pos', 'inventory', 'reports', 'edit_bill'] : ['pos', 'scan'],
+                joinDate: getCurrentDateDisplay()
+            };
+            logActivity('ADD_USER', `Added user: ${name} (${username}) as ${role}`);
+            saveAllData();
+            closeModal('addUserModal');
+            document.getElementById('newUserName').value = '';
+            document.getElementById('newUserUsername').value = '';
+            document.getElementById('newUserPassword').value = '';
+            loadUsersList();
+            showNotification(`User "${name}" added!`, 'success');
+        }
+
+        function showEditUserModal() {
+            const username = prompt('Enter username to edit:');
+            if (username) editUser(username);
+        }
+
+        function editUser(username) {
+            if (currentUser.role !== 'owner') { showNotification('Only owners can edit users!', 'error'); return; }
+            const user = usersDatabase[username];
+            if (!user) { showNotification('User not found!', 'error'); return; }
+            const newRole = prompt(`Role for ${user.name} (cashier/manager/owner):`, user.role);
+            if (!newRole || !['cashier', 'manager', 'owner'].includes(newRole)) return;
+            const newName = prompt('Full Name:', user.name);
+            if (!newName) return;
+            const newBranch = prompt('Branch (main/north/south/east):', user.branch || 'main');
+            logActivity('EDIT_USER', `Edited: ${username} | Role: ${user.role}→${newRole} | Name: ${newName}`);
+            user.role = newRole;
+            user.name = newName;
+            user.branch = newBranch || 'main';
+            user.avatar = newRole === 'owner' ? '👑' : newRole === 'manager' ? '👔' : '👩‍💼';
+            user.permissions = newRole === 'owner' ? ['all'] : newRole === 'manager' ? ['pos', 'inventory', 'reports', 'edit_bill'] : ['pos', 'scan'];
+            saveAllData();
+            loadUsersList();
+            showNotification('User updated!', 'success');
+        }
+
+        function showDeleteUserModal() {
+            const username = prompt('Enter username to delete:');
+            if (username) deleteUser(username);
+        }
+
+        function deleteUser(username) {
+            if (currentUser.role !== 'owner') { showNotification('Only owners can delete users!', 'error'); return; }
+            if (username === currentUser.username) { showNotification('Cannot delete your own account!', 'error'); return; }
+            if (username === 'admin') { showNotification('Cannot delete main admin!', 'error'); return; }
+            const user = usersDatabase[username];
+            if (!user) { showNotification('User not found!', 'error'); return; }
+            if (confirm(`Delete user "${user.name}" (${username})?`)) {
+                logActivity('DELETE_USER', `Deleted user: ${user.name} (${username})`);
+                delete usersDatabase[username];
+                saveAllData();
+                loadUsersList();
+                showNotification('User deleted!', 'warning');
+            }
+        }
+
+        function resetUserPassword(username) {
+            if (currentUser.role !== 'owner') { showNotification('Only owners can reset passwords!', 'error'); return; }
+            if (!username) { username = prompt('Enter username:'); }
+            if (!username || !usersDatabase[username]) { showNotification('User not found!', 'error'); return; }
+            const newPassword = prompt(`New password for ${usersDatabase[username].name}:`);
+            if (newPassword && newPassword.length >= 4) {
+                usersDatabase[username].password = newPassword;
+                logActivity('RESET_PASSWORD', `Password reset for: ${username}`);
+                saveAllData();
+                showNotification('Password reset successfully!', 'success');
+            } else if (newPassword) {
+                showNotification('Password must be at least 4 characters!', 'error');
+            }
+        }
+
+        // ===== VIEW USER ACTIVITY =====
+        function viewUserActivity() {
+            if (currentUser.role !== 'owner') { showNotification('Only owners can view activity logs!', 'error'); return; }
+            const log = JSON.parse(localStorage.getItem('activityLog') || '[]');
+            const container = document.getElementById('activityLogContent');
+            if (log.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:#666;padding:20px;">No activity recorded yet.</p>';
+            } else {
+                let html = `<table style="width:100%;border-collapse:collapse;">
+                    <thead><tr style="background:#1e3c72;color:white;">
+                        <th style="padding:8px;">Time</th><th style="padding:8px;">User</th>
+                        <th style="padding:8px;">Role</th><th style="padding:8px;">Action</th><th style="padding:8px;">Details</th>
+                    </tr></thead><tbody>`;
+                log.slice(0, 100).forEach((entry, i) => {
+                    const bg = i % 2 === 0 ? '#f8f9fa' : 'white';
+                    const actionColor = entry.action.includes('LOGIN') ? '#28a745' : entry.action.includes('SALE') ? '#007bff' : entry.action.includes('DELETE') ? '#dc3545' : '#6c757d';
+                    html += `<tr style="background:${bg};">
+                        <td style="padding:6px;font-size:0.85rem;">${entry.timestamp}</td>
+                        <td style="padding:6px;font-weight:bold;">${entry.user}</td>
+                        <td style="padding:6px;">${entry.role}</td>
+                        <td style="padding:6px;"><span style="background:${actionColor};color:white;padding:2px 8px;border-radius:10px;font-size:0.8rem;">${entry.action}</span></td>
+                        <td style="padding:6px;font-size:0.85rem;">${entry.details}</td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            }
+            document.getElementById('activityModal').style.display = 'flex';
+        }
+
+        function printActivityLog() {
+            const content = document.getElementById('activityLogContent').innerHTML;
+            const win = window.open('', '_blank');
+            win.document.write(`<html><head><title>Activity Log</title><style>body{font-family:Arial,sans-serif;font-size:11px;}</style></head><body><h2 style="text-align:center;">${systemSettings.companyName} - Activity Log</h2><p style="text-align:center;">Printed: ${getCurrentDateTime()} by ${currentUser.name}</p>${content}</body></html>`);
+            win.document.close();
+            win.print();
+        }
+
+        // ===== SETTINGS FUNCTIONS =====
+        function loadSystemSettings() {
+            const saved = JSON.parse(localStorage.getItem('systemSettings') || 'null');
+            if (saved) Object.assign(systemSettings, saved);
+            const fields = { gstPercentage: 'gstPercentage', cgstPercentage: 'cgstPercentage', sgstPercentage: 'sgstPercentage', companyName: 'companyName', companyAddress: 'companyAddress', companyPhone: 'companyPhone', gstinNumber: 'gstinNumber' };
+            Object.entries(fields).forEach(([key, id]) => {
+                const el = document.getElementById(id);
+                if (el) el.value = systemSettings[key];
+            });
+        }
+
+        function saveGSTSettings() {
+            if (currentUser.role !== 'owner') { showNotification('Only owners can change GST settings!', 'error'); return; }
+            systemSettings.gstPercentage = parseFloat(document.getElementById('gstPercentage').value);
+            systemSettings.cgstPercentage = parseFloat(document.getElementById('cgstPercentage').value);
+            systemSettings.sgstPercentage = parseFloat(document.getElementById('sgstPercentage').value);
+            logActivity('SETTINGS', `GST updated: ${systemSettings.gstPercentage}% (CGST: ${systemSettings.cgstPercentage}%, SGST: ${systemSettings.sgstPercentage}%)`);
+            saveAllData();
+            showNotification('GST settings saved!', 'success');
+        }
+
+        function saveCompanySettings() {
+            if (currentUser.role !== 'owner') { showNotification('Only owners can change company settings!', 'error'); return; }
+            systemSettings.companyName = document.getElementById('companyName').value;
+            systemSettings.companyAddress = document.getElementById('companyAddress').value;
+            systemSettings.companyPhone = document.getElementById('companyPhone').value;
+            systemSettings.gstinNumber = document.getElementById('gstinNumber').value;
+            logActivity('SETTINGS', `Company info updated: ${systemSettings.companyName}`);
+            saveAllData();
+            showNotification('Company settings saved!', 'success');
+        }
+
+        function editTaxSettings() { document.getElementById('gstPercentage').focus(); showNotification('Edit GST settings below and click Save', 'info'); }
+        function editCompanyInfo() { document.getElementById('companyName').focus(); showNotification('Edit company info below and click Save', 'info'); }
+        function editReceiptSettings() { showNotification('Update receipt settings in company info section', 'info'); }
+        function backupSettings() {
+            const data = { systemSettings, backupTime: getCurrentDateTime(), backupBy: currentUser.name };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `Settings_Backup_${getCurrentDate()}.json`;
+            a.click();
+            logActivity('BACKUP', 'Settings backed up to file');
+            showNotification('Settings backup downloaded!', 'success');
+        }
+        function showSystemLogs() { viewUserActivity(); }
+
+        // ===== QUICK PRODUCTS =====
+        function loadQuickProducts() {
+            const container = document.getElementById('quickProducts');
+            container.innerHTML = '';
+            // Add Quick Add button
+            const addBtn = document.createElement('div');
+            addBtn.className = 'product-card';
+            addBtn.style.cssText = 'background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border:2px dashed #4caf50;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100px;cursor:pointer;';
+            addBtn.innerHTML = `<div style="font-size:2rem;">➕</div><div style="font-weight:bold;color:#2e7d32;margin-top:5px;">Quick Add New</div>`;
+            addBtn.addEventListener('click', showQuickAddModal);
+            container.appendChild(addBtn);
+
+            Object.values(productDatabase).forEach(product => {
+                const stockClass = product.stock === 0 ? 'stock-low' : product.stock < product.minStock ? 'stock-medium' : 'stock-high';
+                const stockText = product.stock === 0 ? '❌ Out' : product.stock < product.minStock ? '⚠️ Low' : '✅ OK';
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card' + (product.stock === 0 ? ' ' : '');
+                productCard.style.opacity = product.stock === 0 ? '0.6' : '1';
+                productCard.innerHTML = `
+                    <div style="font-weight:bold;font-size:1rem;">${product.name}</div>
+                    <div style="color:#4b6cb7;font-weight:bold;margin:5px 0;">₹${product.price.toFixed(2)}</div>
+                    <div class="product-barcode" style="font-size:0.75rem;">${product.barcode}</div>
+                    <div class="stock-indicator ${stockClass}">${product.stock} | ${stockText}</div>
+                `;
+                if (product.stock > 0) {
+                    productCard.addEventListener('click', () => addToBill(product));
+                    productCard.title = `Click to add to bill`;
+                } else {
+                    productCard.title = 'Out of stock';
+                }
+                container.appendChild(productCard);
+            });
+        }
+
+        // ===== BILL FUNCTIONS =====
+        function holdBill() {
+            if (currentBill.length === 0) { showNotification('No items to hold!', 'warning'); return; }
+            const holdId = Math.floor(Math.random() * 9000) + 1000;
+            localStorage.setItem(`held_bill_${holdId}`, JSON.stringify({ items: currentBill, total: billTotal, time: getCurrentDateTime(), cashier: currentUser.name }));
+            logActivity('HOLD_BILL', `Bill held with ID: ${holdId}`);
+            currentBill = [];
+            updateBillDisplay();
+            updateReceiptPreview();
+            showNotification(`Bill held with ID: ${holdId}`, 'success');
+        }
+
+        function clearBill() {
+            if (confirm('Clear current bill?')) {
+                currentBill.forEach(item => { productDatabase[item.barcode].stock += item.quantity; });
+                currentBill = [];
+                updateBillDisplay();
+                updateReceiptPreview();
+                document.getElementById('discountAmount').textContent = '₹0.00';
+                updateGSTBreakdown();
+                showNotification('Bill cleared', 'warning');
+            }
+        }
+
+        function voidBill() {
+            if (!['owner', 'manager'].includes(currentUser.role)) { showNotification('Only managers/owners can void bills!', 'error'); return; }
+            if (currentBill.length === 0) { showNotification('No bill to void!', 'warning'); return; }
+            if (confirm('Void this bill? This will return stock.')) {
+                currentBill.forEach(item => { productDatabase[item.barcode].stock += item.quantity; });
+                logActivity('VOID_BILL', `Bill voided - ${currentBill.length} items returned to stock`);
+                currentBill = [];
+                updateBillDisplay();
+                updateReceiptPreview();
+                saveAllData();
+                loadInventory();
+                showNotification('Bill voided! Stock returned.', 'warning');
+            }
+        }
+
+        // ===== OWNER DASHBOARD FUNCTIONS =====
+        function generateFullReport() {
+            if (currentUser.role !== 'owner') { showNotification('Only owners!', 'error'); return; }
+            switchTab('reports');
+        }
+
+        function backupFullSystem() {
+            if (currentUser.role !== 'owner') { showNotification('Only owners!', 'error'); return; }
+            const backupData = { users: usersDatabase, products: productDatabase, sales: salesDatabase, settings: systemSettings, backupTime: getCurrentDateTime(), backupBy: currentUser.name };
+            const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `FullBackup_${getCurrentDate()}.json`;
+            a.click();
+            logActivity('FULL_BACKUP', `Complete system backup downloaded`);
+            showNotification('Full system backup downloaded!', 'success');
+        }
+
+        function showAuditLog() { viewUserActivity(); }
+
+        function generateDailyReport() {
+            const today = getCurrentDate();
+            const todaySales = salesDatabase.filter(s => parseSaleCalendarKey(s) === today);
+            const total = todaySales.reduce((s, x) => s + x.total, 0);
+            const gst = todaySales.reduce((s, x) => s + x.gst, 0);
+            alert(`📈 Daily Report - ${getCurrentDateDisplay()}\n\nTransactions: ${todaySales.length}\nTotal Sales: ₹${total.toFixed(2)}\nGST Collected: ₹${gst.toFixed(2)}\nAvg Bill: ₹${todaySales.length ? (total / todaySales.length).toFixed(2) : 0}\n\nProducts: ${Object.keys(productDatabase).length}\nLow Stock: ${Object.values(productDatabase).filter(p => p.stock < p.minStock).length}`);
+        }
+
+        function viewStaffPerformance() {
+            const byUser = {};
+            salesDatabase.forEach(s => {
+                if (!byUser[s.cashier]) byUser[s.cashier] = { bills: 0, total: 0 };
+                byUser[s.cashier].bills++;
+                byUser[s.cashier].total += s.total;
+            });
+            let msg = '👥 Staff Performance\n\n';
+            Object.entries(byUser).forEach(([name, d]) => { msg += `${name}: ${d.bills} bills | ₹${d.total.toFixed(2)}\n`; });
+            alert(msg || 'No sales data yet.');
+        }
+
+        // ===== BARCODE & SCANNER =====
+        function initScanner() {
+            const scannerBox = document.getElementById('scannerBox');
+            scannerBox.addEventListener('click', function () {
+                if (!scannerActive) startScanner(); else stopScanner();
+            });
+        }
+
+        function startScanner() {
+            if (quaggaRunning || quaggaStarting) return;
+            if (typeof Quagga === 'undefined') {
+                showNotification('Barcode library failed to load. Refresh the page or use manual entry.', 'error');
+                document.getElementById('barcodeInput').focus();
+                return;
+            }
+            const viewport = document.getElementById('quaggaViewport');
+            const preview = document.getElementById('scannerPreview');
+            const statusEl = document.getElementById('scannerStatus');
+            if (!viewport || !preview) return;
+            quaggaStarting = true;
+            viewport.innerHTML = '';
+            preview.style.display = 'block';
+            lastBarcodeValue = '';
+            if (statusEl) {
+                statusEl.className = 'scanner-status status-active';
+                statusEl.textContent = '🟢 Starting camera… allow access if prompted';
+            }
+            Quagga.init({
+                inputStream: {
+                    name: 'Live',
+                    type: 'LiveStream',
+                    target: viewport,
+                    constraints: {
+                        width: { min: 320, ideal: 1280, max: 1920 },
+                        height: { min: 240, ideal: 720, max: 1080 },
+                    facingMode: { ideal: 'environment' },
+                    aspectRatio: { min: 1, max: 2 }
+                    }
+                },
+                locator: { patchSize: 'medium', halfSample: true },
+                numOfWorkers: 0,
+                frequency: 8,
+                decoder: {
+                    readers: [
+                        'ean_reader',
+                        'ean_8_reader',
+                        'code_128_reader',
+                        'code_39_reader',
+                        'upc_reader',
+                        'upc_e_reader'
+                    ],
+                    multiple: false
+                },
+                locate: true
+            }, function (err) {
+                if (err) {
+                    console.error('Quagga init:', err);
+                    if (statusEl) {
+                        statusEl.className = 'scanner-status status-idle';
+                        statusEl.textContent = '⭕ Retrying with default camera…';
+                    }
+                    quaggaStarting = true;
+                    Quagga.init({
+                        inputStream: {
+                            name: 'Live',
+                            type: 'LiveStream',
+                            target: viewport,
+                            constraints: { width: { ideal: 640 }, height: { ideal: 480 } }
+                        },
+                        locator: { patchSize: 'medium', halfSample: true },
+                        numOfWorkers: 0,
+                        frequency: 8,
+                        decoder: {
+                            readers: ['ean_reader', 'ean_8_reader', 'code_128_reader', 'code_39_reader', 'upc_reader', 'upc_e_reader'],
+                            multiple: false
+                        },
+                        locate: true
+                    }, function (err2) {
+                        quaggaStarting = false;
+                        if (err2) {
+                            console.error('Quagga fallback:', err2);
+                            if (statusEl) {
+                                statusEl.className = 'scanner-status status-idle';
+                                statusEl.textContent = '⭕ Camera error — use manual entry';
+                            }
+                            preview.style.display = 'none';
+                            showNotification('Camera: allow permission, use HTTPS/localhost, or type barcode.', 'error');
+                            return;
+                        }
+                        quaggaRunning = true;
+                        scannerActive = true;
+                        Quagga.onDetected(onQuaggaDetected);
+                        Quagga.start();
+                        if (statusEl) statusEl.textContent = '🟢 Point camera at barcode';
+                    });
+                    return;
+                }
+                quaggaStarting = false;
+                quaggaRunning = true;
+                scannerActive = true;
+                Quagga.onDetected(onQuaggaDetected);
+                Quagga.start();
+                if (statusEl) {
+                    statusEl.textContent = '🟢 Point camera at barcode (EAN / UPC / Code128)';
+                }
+                document.getElementById('barcodeInput').focus();
+            });
+        }
+
+        function stopScanner() {
+            lastBarcodeValue = '';
+            if (typeof Quagga !== 'undefined' && quaggaRunning) {
+                try {
+                    Quagga.offDetected(onQuaggaDetected);
+                    Quagga.stop();
+                } catch (e) { console.warn('Quagga stop:', e); }
+                quaggaRunning = false;
+            }
+            scannerActive = false;
+            const statusEl = document.getElementById('scannerStatus');
+            if (statusEl) {
+                statusEl.className = 'scanner-status status-idle';
+                statusEl.textContent = '⭕ Scanner: Idle';
+            }
+            const preview = document.getElementById('scannerPreview');
+            if (preview) preview.style.display = 'none';
+            const vp = document.getElementById('quaggaViewport');
+            if (vp) vp.innerHTML = '';
+        }
+
+        function resolveProductByBarcode(raw) {
+            if (raw == null) return null;
+            const s = String(raw).trim().replace(/\s+/g, '');
+            const digits = s.replace(/\D/g, '');
+            const candidates = [s, digits];
+            if (digits.length === 12) candidates.push('0' + digits);
+            for (const c of candidates) {
+                if (c && productDatabase[c]) return productDatabase[c];
+            }
+            return null;
+        }
+
+        function handleBarcodeScan(barcode) {
+            const product = resolveProductByBarcode(barcode);
+            if (product) {
+                addToBill(product);
+            } else {
+                showNotification(`Barcode not found: ${String(barcode).trim()}`, 'error');
+            }
+        }
+
+        function handleBarcodeEnter(event) {
+            if (event.key === 'Enter') manualAddItem();
+        }
+
+        function manualAddItem() {
+            const barcodeInput = document.getElementById('barcodeInput');
+            const barcode = barcodeInput.value.trim();
+            if (barcode) {
+                handleBarcodeScan(barcode);
+                barcodeInput.value = '';
+                barcodeInput.focus();
+            }
+        }
+
+        // ===== RECEIPT PRINT =====
+        function printReceipt() {
+            const printContent = document.getElementById('printableReceipt').innerHTML;
+            const win = window.open('', '_blank');
+            win.document.write(`<html><head><title>Receipt</title><style>body{font-family:'Courier New',monospace;max-width:400px;margin:0 auto;padding:10px;}.receipt-item{display:flex;justify-content:space-between;margin:4px 0;}.receipt-header{text-align:center;border-bottom:2px dashed #333;padding-bottom:10px;margin-bottom:10px;}.receipt-total{border-top:2px dashed #333;padding-top:10px;font-weight:bold;font-size:1.2em;}</style></head><body>${printContent}<p style="text-align:center;margin-top:10px;font-size:0.8em;">Printed: ${getCurrentDateTime()}</p></body></html>`);
+            win.document.close();
+            win.print();
+            logActivity('PRINT', `Receipt printed for bill #${document.getElementById('receiptBillNo').textContent}`);
+        }
+
+        // ===== PRINT PRODUCT LIST =====
+        function printProductDetails(barcode) {
+            const p = productDatabase[barcode];
+            if (!p) return;
+            const win = window.open('', '_blank');
+            win.document.write(`<html><head><title>Product Details</title></head><body style="font-family:Arial;padding:20px;"><h2>${p.name}</h2><table style="width:100%;border-collapse:collapse;"><tr><td style="padding:8px;border:1px solid #ddd;"><b>Barcode</b></td><td style="padding:8px;border:1px solid #ddd;">${p.barcode}</td></tr><tr><td style="padding:8px;border:1px solid #ddd;"><b>Price</b></td><td style="padding:8px;border:1px solid #ddd;">₹${p.price.toFixed(2)}</td></tr><tr><td style="padding:8px;border:1px solid #ddd;"><b>Category</b></td><td style="padding:8px;border:1px solid #ddd;">${p.category}</td></tr><tr><td style="padding:8px;border:1px solid #ddd;"><b>Stock</b></td><td style="padding:8px;border:1px solid #ddd;">${p.stock} units</td></tr><tr><td style="padding:8px;border:1px solid #ddd;"><b>Last Updated</b></td><td style="padding:8px;border:1px solid #ddd;">${p.lastUpdated}</td></tr></table><p>Printed: ${getCurrentDateTime()}</p></body></html>`);
+            win.document.close(); win.print();
+        }
+
+        // ===== TIME UPDATE =====
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+            const dateStr = getCurrentDateDisplay();
+            const el = document.getElementById('currentTime');
+            if (el) el.textContent = `${dateStr} ${timeStr}`;
+            const receiptDate = document.getElementById('receiptDate');
+            if (receiptDate && currentBill.length === 0) receiptDate.textContent = `${dateStr} ${timeStr}`;
+        }
+
+        function updateReceiptPreview() {
+            const receiptItems = document.getElementById('receiptItems');
+            const subtotal = billTotal;
+            const gst = subtotal * (systemSettings.gstPercentage / 100);
+            const discountText = document.getElementById('discountAmount').textContent.replace('₹', '').replace('-', '').trim();
+            const discount = parseFloat(discountText) || 0;
+            const total = subtotal + gst - discount;
+            receiptItems.innerHTML = '';
+            if (currentBill.length === 0) {
+                receiptItems.innerHTML = '<div class="receipt-item"><span>--- No items ---</span></div>';
+            } else {
+                currentBill.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'receipt-item';
+                    itemDiv.innerHTML = `<span>${item.name} x${item.quantity}</span><span>₹${item.total.toFixed(2)}</span>`;
+                    receiptItems.appendChild(itemDiv);
+                });
+                const sep = document.createElement('div');
+                sep.className = 'receipt-item';
+                sep.innerHTML = `<span style="font-size:0.8em">Subtotal: ₹${subtotal.toFixed(2)} | GST: ₹${gst.toFixed(2)}</span>`;
+                receiptItems.appendChild(sep);
+            }
+            document.getElementById('receiptTotal').textContent = `₹${total.toFixed(2)}`;
+        }
+
+        // ===== NOTIFICATION =====
+        function showNotification(message, type) {
+            const existing = document.querySelectorAll('.notification-toast');
+            existing.forEach(n => n.remove());
+            const notification = document.createElement('div');
+            notification.className = 'notification-toast';
+            notification.style.cssText = `position:fixed;top:20px;right:20px;padding:15px 20px;border-radius:8px;color:white;font-weight:bold;z-index:9999;animation:slideIn 0.3s ease;box-shadow:0 4px 12px rgba(0,0,0,0.2);max-width:350px;`;
+            const colors = { success: 'linear-gradient(135deg,#00b09b,#96c93d)', warning: 'linear-gradient(135deg,#f7971e,#ffd200)', error: 'linear-gradient(135deg,#ff416c,#ff4b2b)', info: 'linear-gradient(135deg,#4b6cb7,#182848)' };
+            notification.style.background = colors[type] || colors.info;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => { notification.style.animation = 'slideOut 0.3s ease'; setTimeout(() => notification.remove(), 300); }, 3500);
+        }
+
+        // ===== SOUNDS =====
+        function playScanSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.frequency.value = 880; osc.type = 'sine';
+                gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+                osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.08);
+            } catch(e) {}
+        }
+
+        function playLoginSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                [523, 659, 784].forEach((freq, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain); gain.connect(ctx.destination);
+                    osc.frequency.value = freq; osc.type = 'sine';
+                    gain.gain.setValueAtTime(0.2, ctx.currentTime + i * 0.1);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.1 + 0.15);
+                    osc.start(ctx.currentTime + i * 0.1);
+                    osc.stop(ctx.currentTime + i * 0.1 + 0.15);
+                });
+            } catch(e) {}
+        }
+
+        // ===== MODAL UTILS =====
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // ===== CSS ANIMATIONS =====
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+            @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+            .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; overflow-y: auto; }
+            .modal-content { background: white; border-radius: 12px; padding: 2rem; width: 90%; max-width: 500px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
+            .modal-title { font-size: 1.8rem; font-weight: 700; color: #1e3c72; margin-bottom: 1.5rem; }
+            .role-selector { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+            .role-option { flex: 1; text-align: center; padding: 1.2rem; border: 2px solid #e0e0e0; border-radius: 10px; cursor: pointer; transition: all 0.3s; }
+            .role-option:hover { border-color: #4b6cb7; background: #f0f4ff; }
+            .role-option.selected { border-color: #4b6cb7; background: #e8eeff; }
+            .role-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+            .receipt-total { border-top: 2px dashed #333; padding-top: 1rem; margin-top: 0.5rem; }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
